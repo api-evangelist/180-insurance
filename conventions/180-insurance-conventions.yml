@@ -1,0 +1,62 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.180s.com.br/reference
+docs: https://docs.180s.com.br/reference/introducao
+summary: >-
+  Cross-cutting request/response semantics for the 180 Seguros Sagas API,
+  captured from the published reference (authentication, pagination, error
+  envelope, webhook signing, versioning). Insurance embedding API — quote,
+  proposal, sale, endorsement, renewal, claim (sinistro) lifecycle.
+authentication:
+  style: oauth2-client-credentials
+  header: 'Authorization: Bearer {access_token}'
+  artifact: authentication/180-insurance-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  path_prefix: /sagas/v1
+  docs_branch: 0.1-pt
+pagination:
+  style: cursor
+  params:
+    next: pagina-seguinte
+    previous: pagina-anterior
+    limit: limite
+  response_fields:
+    collection: '{colecao}'   # varies by endpoint, e.g. itens
+    next_cursor: pagina-seguinte
+    previous_cursor: pagina-anterior
+  cursor_type: opaque-string
+  end_of_results: absence of the pagina-seguinte / pagina-anterior field
+  docs: https://docs.180s.com.br/reference/paginação
+error_envelope:
+  format: rfc9457
+  media_type: application/problem+json
+  fields: [type, status, title, detail, instance, problem-id]
+  extension: problem-id is a concise non-standard RFC 9457 key mirroring type
+  type_uri_pattern: https://180seg.github.io/sagas-docs/v1/problems/{problem-id}
+  catalog: errors/180-insurance-problem-types.yml
+  docs: https://docs.180s.com.br/reference/erros
+metadata:
+  supported: true
+  field: metadados
+  shape: key/value map attached to a quote (cotação) and carried through the flow
+webhooks:
+  supported: true
+  signature_header: i80-signature
+  signature_format: 't={timestamp},{version}={signature}'
+  algorithm: HMAC-SHA256
+  signed_payload: '{timestamp}.{raw_event_body}'
+  encoding: hex
+  key_rotation: dual-key overlap for 7 days via rotacionar-chave-hmac endpoint
+  optional_shared_secret: "segredo-compartilhado -> Authorization: Bearer SECRET"
+  catalog: asyncapi/180-insurance-webhooks.yml
+rate_limiting:
+  signaled: true
+  evidence: >-
+    HTTP 429 problem types api-gateway-too-many-requests-quota-exceeded and
+    api-gateway-too-many-requests-throttled are published in the error catalog
+    (AWS API Gateway fronts the API); numeric limits are not publicly documented.
+idempotency:
+  documented: false
+  note: No idempotency-key header/parameter is documented in the public reference.

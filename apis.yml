@@ -1,9 +1,32 @@
 aid: 180-insurance
 name: 180 Insurance
-description: '180 Insurance is a company surfaced as a portfolio company of 8vc and added to the API Evangelist
-  network as a stub for enrichment. Sector: insurtech. This profile is a lead awaiting the enrichment
-  pipeline.'
+description: >-
+  180 Seguros (180 Insurance) is the first tech-native insurer in Brazil, an
+  SUSEP-authorized insurtech that lets fintechs, digital banks, credit
+  cooperatives and other financial and non-financial businesses embed insurance
+  into their own products through a single API — the Sagas API. The platform
+  covers the full insurance lifecycle: product/combo listing, quotation
+  (cotação), proposal (proposta), sale/policy issuance (venda), endorsements,
+  renewals (renovações) and claims (sinistros), plus HMAC-signed webhooks for
+  real-time visibility. Authentication is OAuth2 client-credentials via Auth0,
+  errors follow RFC 9457 problem-details, and the company publishes a security
+  posture including AICPA SOC 2, LGPD and SUSEP Circular 638 compliance. 180
+  Seguros is backed by 8VC, Monashees, Dragoneer, Atlantico and Canary, and was
+  added to the API Evangelist network as an 8VC portfolio company.
 url: https://raw.githubusercontent.com/api-evangelist/180-insurance/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://files.readme.io/21b0f8e-small-180_seguros_logo.jpeg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -16,7 +39,36 @@ modified: '2026-07-17'
 tags:
 - Company
 - Insurtech
-apis: []
+- Insurance
+- Embedded Insurance
+- Brazil
+- Fintech
+- API
+- Webhooks
+apis:
+- name: 180 Seguros Sagas API
+  description: >-
+    Single embedded-insurance API covering the full lifecycle — quotation,
+    proposal, sale/policy issuance, endorsement, renewal, claims and webhooks.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  properties:
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: MCPServer
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -25,3 +77,56 @@ maintainers:
 common:
 - type: Website
   url: https://180s.com.br
+- type: DeveloperPortal
+  url: https://docs.180s.com.br/reference/introducao
+- type: Documentation
+  url: https://docs.180s.com.br/reference/introducao
+- type: APIReference
+  url: https://docs.180s.com.br/reference
+- type: GettingStarted
+  url: https://docs.180s.com.br/reference/introducao
+- type: Blog
+  url: https://180s.com.br/blog/
+- type: TermsOfService
+  url: https://180s.com.br/condicoes-gerais/
+- type: PrivacyPolicy
+  url: https://180s.com.br/wp-content/uploads/2026/03/Politica-de-Privacidade-180-Seguros-new.docx-1.pdf
+- type: Support
+  url: https://180s.com.br/contato/
+- type: SignUp
+  url: https://180s.com.br/contato/
+- type: GitHubOrganization
+  url: https://github.com/180seg
+- type: Authentication
+  url: authentication/180-insurance-authentication.yml
+- type: Conventions
+  url: conventions/180-insurance-conventions.yml
+- type: ErrorCatalog
+  url: errors/180-insurance-problem-types.yml
+- type: Webhooks
+  url: asyncapi/180-insurance-webhooks.yml
+- type: MCPServer
+  url: mcp/180-insurance-mcp.yml
+- type: Lifecycle
+  url: lifecycle/180-insurance-lifecycle.yml
+- type: Conformance
+  url: conformance/180-insurance-conformance.yml
+- type: Compliance
+  url: https://180s.com.br/tecnologia-180/
+- type: DataModel
+  url: data-model/180-insurance-data-model.yml
+- type: Sandbox
+  url: sandbox/180-insurance-sandbox.yml
+- type: WellKnown
+  url: well-known/180-insurance-well-known.yml
+- type: DomainSecurity
+  url: security/180-insurance-domain-security.yml
+- type: LLMsTxt
+  url: llms/180-insurance-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

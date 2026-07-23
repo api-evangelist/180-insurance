@@ -1,0 +1,31 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.180s.com.br/reference
+versioning:
+  scheme: uri-path
+  current: v1
+  path_prefix: /sagas/v1
+  docs_branch: 0.1-pt
+  docs: https://docs.180s.com.br/reference/introducao
+maturity_notes: >-
+  Claims (sinistro) endpoints are explicitly labelled "em desenvolvimento (WIP)"
+  in the reference — the contract may change. The remaining quote / proposal /
+  sale / renewal / webhook surface is documented as stable.
+wip_operations:
+- POST /sagas/v1/vendas/{id-venda}/abrir-sinistro
+- GET /sagas/v1/sinistros/{numero-sinistro}
+- POST /sagas/v1/sinistros/{numero-sinistro}/enviar-documento
+- GET /sagas/v1/sinistros/{numero-sinistro}/documentos/{file-id}
+- POST /sagas/v1/sinistros/whitelabel/gerar-url
+- POST /sagas/v1/sinistros/{numero-sinistro}/saldo-devedor
+deprecation:
+  policy_url: null
+  sunset_header: unknown
+  note: No formal deprecation / Sunset (RFC 8594) policy is publicly documented.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+notes: >-
+  No public status page or SLA page was found on 180s.com.br / docs.180s.com.br.
+  The API is fronted by AWS API Gateway (us-east-2).

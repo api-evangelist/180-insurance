@@ -1,0 +1,14 @@
+{
+  "repo": "180-insurance",
+  "feeds": [
+    {
+      "source": "https://docs.180s.com.br/reference/introducao",
+      "feed_url": "https://docs.180s.com.br/reference/introducao",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-07-20T13:31:34Z"
+}

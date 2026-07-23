@@ -1,0 +1,77 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.180s.com.br/reference/webhooks-eventos
+spec_type: Webhooks
+docs:
+  events: https://docs.180s.com.br/reference/webhooks-eventos
+  security: https://docs.180s.com.br/reference/webhooks-seguranca
+summary: >-
+  The 180 Seguros Sagas API delivers HMAC-signed webhook events over the
+  proposal / sale / renewal / claim lifecycle. Subscriptions are managed via the
+  /sagas/v1/webhooks resource (create, list, update, delete, rotate-hmac-key).
+  Endpoints must respond to POST with a 2xx (e.g. 204). No AsyncAPI document is
+  published by the provider; this is the captured webhook catalog.
+delivery:
+  transport: https-post
+  expected_response: 2xx (e.g. 204)
+  envelope:
+    id-evento: uuid
+    evento: string (event type)
+    criado-em: date
+    versao: '1'
+    detalhes: object (event-type-specific identifiers)
+security:
+  signature_header: i80-signature
+  signature_format: 't={timestamp},{version}={signature}'
+  algorithm: HMAC-SHA256
+  signed_string: '{timestamp}.{raw_event_body}'
+  encoding: hex
+  timestamp_check: reject events that are excessively old
+  key_rotation:
+    endpoint: POST /sagas/v1/webhooks/{id-webhook}/rotacionar-chave-hmac
+    overlap_days: 7
+    behavior: events are delivered with two signatures during the overlap window
+  optional_shared_secret:
+    field: segredo-compartilhado
+    delivered_as: 'Authorization: Bearer {SECRET_VALUE}'
+subscription_management:
+  list: GET /sagas/v1/webhooks
+  create: POST /sagas/v1/webhooks
+  update: PATCH /sagas/v1/webhooks/{id-webhook}
+  delete: DELETE /sagas/v1/webhooks/{id-webhook}
+  rotate_hmac: POST /sagas/v1/webhooks/{id-webhook}/rotacionar-chave-hmac
+events:
+- name: ping
+  description: Verification event for the destination URL
+- name: proposta-criada
+  description: New proposal created
+- name: proposta-documentos-renderizados
+  description: Proposal documents rendered and ready to access
+- name: proposta-requisicao-de-cancelamento-criada
+  description: Proposal cancellation request initiated
+- name: proposta-requisicao-de-cancelamento-completa
+  description: Proposal cancellation request completed
+- name: proposta-expirada
+  description: Proposal was not completed within its validity window
+- name: venda-criada
+  description: New sale created from a completed proposal
+- name: venda-completa
+  description: Issuance process completed
+- name: venda-documentos-renderizados
+  description: Sale documents rendered and ready to access
+- name: venda-requisicao-de-cancelamento-criada
+  description: Sale cancellation request initiated
+- name: venda-requisicao-de-cancelamento-completa
+  description: Sale cancellation request completed
+- name: renovacao-disponivel
+  description: Renewal available (first attempt or retry)
+- name: renovacao-iniciada
+  description: Renewal initiated successfully
+- name: renovacao-completa
+  description: Renewal process completed successfully
+- name: renovacao-cancelada
+  description: Renewal cancelled
+- name: sinistro-pagamento-concluido
+  description: Claim (sinistro) payment completed
+- name: cancelamento-pagamento-concluido
+  description: Cancellation refund payment processed

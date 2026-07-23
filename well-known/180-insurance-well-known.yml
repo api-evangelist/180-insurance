@@ -1,0 +1,31 @@
+generated: '2026-07-17'
+method: searched
+source: live probes of 180 Seguros Sagas API + Auth0 authorization-server hosts
+notes: >-
+  The Sagas API authenticates via the 180s-staging Auth0 tenant (OAuth2 client
+  credentials). The OIDC / OAuth authorization-server discovery documents below
+  are served by that tenant. No security.txt, api-catalog or ai-plugin.json was
+  found on the 180s.com.br, docs.180s.com.br or sagas.staging.180s.com.br hosts.
+hosts:
+- host: https://180s-staging.us.auth0.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: 180-insurance-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: 180-insurance-oauth-authorization-server.json
+- host: https://180s.com.br
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+- host: https://docs.180s.com.br
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404

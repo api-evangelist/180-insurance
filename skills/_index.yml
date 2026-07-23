@@ -1,0 +1,20 @@
+generated: '2026-07-17'
+method: generated
+source: https://docs.180s.com.br/reference/introducao
+skills:
+- file: 180-insurance-quote-to-policy.md
+  name: Quote to policy (cotação → proposta → venda)
+  api: https://docs.180s.com.br/reference/introducao
+  operations:
+  - 'GET /sagas/v1/combos'
+  - 'POST /sagas/v1/cotacoes'
+  - 'POST /sagas/v1/propostas'
+  - 'GET /sagas/v1/propostas/{id-proposta}'
+  - 'GET /sagas/v1/vendas/{id-venda}'
+- file: 180-insurance-webhook-subscription.md
+  name: Subscribe to and verify 180 Seguros webhooks
+  api: https://docs.180s.com.br/reference/webhooks-eventos
+  operations:
+  - 'POST /sagas/v1/webhooks'
+  - 'GET /sagas/v1/webhooks'
+  - 'POST /sagas/v1/webhooks/{id-webhook}/rotacionar-chave-hmac'

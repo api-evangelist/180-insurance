@@ -1,0 +1,69 @@
+generated: '2026-07-17'
+method: derived
+status: candidate
+source: https://docs.180s.com.br/llms.txt
+provider_signal: >-
+  180 Seguros has publicly stated it is building an MCP (Model Context Protocol)
+  server with authorization, auditing and tooling so LLMs can act across the
+  insurance cycle with compliance. No hosted MCP endpoint is published yet, so
+  the tool list below is a candidate derived from the documented Sagas API
+  operations (grounded in the published reference), not an official server.
+server:
+  name: 180-insurance-sagas
+  transport: http
+  url: null
+tools:
+- name: listar_combos_produtos
+  description: List product combos and products available to the channel
+  source_operation: GET /sagas/v1/combos
+- name: realizar_cotacao
+  description: Create a quotation for a chosen product and coverages
+  source_operation: POST /sagas/v1/cotacoes
+- name: obter_cotacao
+  description: Get the details of a quotation by id
+  source_operation: GET /sagas/v1/cotacoes/{id-cotacao}
+- name: listar_produtos_com_cotacao
+  description: List a product and its quotations
+  source_operation: POST /sagas/v1/combos-com-cotacao
+- name: criar_proposta
+  description: Issue a proposal from a quotation
+  source_operation: POST /sagas/v1/propostas
+- name: obter_proposta
+  description: Get the details of a proposal by id
+  source_operation: GET /sagas/v1/propostas/{id-proposta}
+- name: atualizar_proposta
+  description: Update an existing proposal
+  source_operation: PATCH /sagas/v1/propostas/{id-proposta}
+- name: atualizar_cliente_segurado
+  description: Update insured-client data while the proposal is pending
+  source_operation: PATCH /sagas/v1/propostas/{id-proposta}/cliente-segurado
+- name: solicitar_cancelamento_proposta
+  description: Request cancellation of a pending proposal
+  source_operation: POST /sagas/v1/propostas/{id-proposta}/solicitar-cancelamento
+- name: listar_vendas
+  description: List the sales tied to a client
+  source_operation: POST /sagas/v1/vendas
+- name: obter_venda
+  description: Get a specific sale and related entities
+  source_operation: GET /sagas/v1/vendas/{id-venda}
+- name: solicitar_cancelamento_venda
+  description: Request cancellation of a sale
+  source_operation: POST /sagas/v1/vendas/{id-venda}/solicitar-cancelamento
+- name: abrir_sinistro
+  description: Open a claim for the policy tied to a sale (WIP)
+  source_operation: POST /sagas/v1/vendas/{id-venda}/abrir-sinistro
+- name: obter_sinistro
+  description: Get claim details by claim number (WIP)
+  source_operation: GET /sagas/v1/sinistros/{numero-sinistro}
+- name: iniciar_renovacao
+  description: Start an available renewal
+  source_operation: POST /sagas/v1/renovacoes/{id-renovacao}/iniciar
+- name: listar_renovacoes
+  description: List existing renewals
+  source_operation: GET /sagas/v1/renovacoes
+- name: listar_webhooks
+  description: List active webhook subscriptions
+  source_operation: GET /sagas/v1/webhooks
+- name: criar_webhook
+  description: Register a webhook destination URL
+  source_operation: POST /sagas/v1/webhooks

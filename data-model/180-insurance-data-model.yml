@@ -1,0 +1,85 @@
+generated: '2026-07-17'
+method: derived
+source: https://docs.180s.com.br/llms.txt
+docs: https://docs.180s.com.br/reference/fluxo-de-contratacao
+summary: >-
+  Entity-relationship graph for the 180 Seguros Sagas API, derived from the
+  published operation surface and the documented contracting flow
+  (combo/produto -> cotacao -> proposta -> venda -> {renovacao, sinistro,
+  cancelamento}). Field names follow the API's Portuguese vocabulary.
+entities:
+- name: combo
+  description: Product bundle/configuration available to a distribution channel
+  key: id-combo
+- name: produto
+  description: Individual insurance product within a combo
+  key: id-produto
+- name: cotacao
+  description: Quotation for chosen product + coverages; carries metadados key/value
+  key: id-cotacao
+- name: proposta
+  description: Proposal issued from a quotation; status pendente|completa
+  key: id-proposta
+- name: cliente-segurado
+  description: Insured client tied to a proposal
+- name: venda
+  description: Sale/policy created when a proposal completes
+  key: id-venda
+- name: renovacao
+  description: Renewal of an existing sale
+  key: id-renovacao
+- name: sinistro
+  description: Claim opened against the policy of a sale (WIP)
+  key: numero-sinistro
+- name: cancelamento
+  description: Cancellation entity for a proposal or sale; status pendente|completo
+- name: webhook
+  description: Webhook subscription (destination URL + HMAC key)
+  key: id-webhook
+- name: documento
+  description: Rendered PDF for a proposal or sale
+relationships:
+- from: produto
+  to: combo
+  type: belongs_to
+  via: id-combo
+- from: cotacao
+  to: produto
+  type: belongs_to
+  via: id-produto
+- from: proposta
+  to: cotacao
+  type: belongs_to
+  via: id-cotacao
+- from: proposta
+  to: cliente-segurado
+  type: has_one
+  via: cliente-segurado
+- from: venda
+  to: proposta
+  type: belongs_to
+  via: id-proposta
+- from: renovacao
+  to: venda
+  type: belongs_to
+  via: id-venda
+- from: sinistro
+  to: venda
+  type: belongs_to
+  via: id-venda
+- from: sinistro
+  to: cobertura
+  type: has_one
+  via: cobertura
+- from: cancelamento
+  to: venda
+  type: belongs_to
+  via: id-venda
+- from: documento
+  to: proposta
+  type: belongs_to
+  via: id-proposta
+- from: documento
+  to: venda
+  type: belongs_to
+  via: id-venda

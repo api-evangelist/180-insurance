@@ -1,0 +1,25 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.180s.com.br/reference/autenticacao
+docs: https://docs.180s.com.br/reference/autenticacao
+summary: >-
+  180 Seguros documents a staging environment that partners integrate against
+  before going live. Authentication and the API run on dedicated staging hosts.
+  No published magic/test identifiers (test cards, test IBANs, fixtures) were
+  found — this is an embedded-insurance API, and test data is provisioned per
+  partner/channel rather than via public magic values.
+environments:
+- name: staging
+  api_base_url: https://sagas.staging.180s.com.br
+  auth_token_url: https://180s-staging.us.auth0.com/oauth/token
+  auth_tenant: 180s-staging.us.auth0.com
+  gateway: AWS API Gateway (us-east-2)
+  notes: >-
+    Documented in the reference; unauthenticated calls return 401. Credentials
+    (client_id/client_secret) are issued per distribution channel by 180 Seguros.
+- name: production
+  api_base_url: null
+  notes: Production host is not publicly documented; provisioned per partner.
+test_values:
+  published: false
+  note: No public test cards / magic identifiers documented.

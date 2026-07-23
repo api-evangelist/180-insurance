@@ -1,0 +1,33 @@
+generated: '2026-07-17'
+method: searched
+source: https://180s.com.br/tecnologia-180/
+compliance_docs: https://180s.com.br/tecnologia-180/
+summary: >-
+  180 Seguros publishes a security & compliance posture for the Sagas API: AICPA
+  SOC 2 (Type 1), Brazilian LGPD data-protection compliance, and SUSEP Circular
+  638 (insurance-regulator) compliance, with Okta / Auth0 / Vanta as the
+  identity and continuous-compliance tooling. The API also conforms to OAuth2
+  client-credentials, RFC 9457 problem-details errors, and cursor pagination.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: OAuth2 client-credentials grant via Auth0 (authentication/180-insurance-authentication.yml)
+- id: rfc9457-problem-details
+  conforms: true
+  evidence: application/problem+json envelope with type/status/title/detail/instance (+problem-id)
+- id: soc2
+  conforms: true
+  level: Type 1
+  evidence: AICPA-SOC2 Type 1 stated on tecnologia-180 page
+- id: lgpd
+  conforms: true
+  evidence: LGPD (Lei Geral de Proteção de Dados) compliance stated
+- id: susep-circular-638
+  conforms: true
+  evidence: SUSEP Circular 638 (open-insurance / security) compliance stated
+- id: fhir-r4
+  conforms: false
+- id: fapi
+  conforms: false
+- id: json-api
+  conforms: false
