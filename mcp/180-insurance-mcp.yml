@@ -2,12 +2,10 @@ generated: '2026-07-17'
 method: derived
 status: candidate
 source: https://docs.180s.com.br/llms.txt
-provider_signal: >-
-  180 Seguros has publicly stated it is building an MCP (Model Context Protocol)
-  server with authorization, auditing and tooling so LLMs can act across the
-  insurance cycle with compliance. No hosted MCP endpoint is published yet, so
-  the tool list below is a candidate derived from the documented Sagas API
-  operations (grounded in the published reference), not an official server.
+provider_signal: 180 Seguros has publicly stated it is building an MCP (Model Context Protocol) server
+  with authorization, auditing and tooling so LLMs can act across the insurance cycle with compliance.
+  No hosted MCP endpoint is published yet, so the tool list below is a candidate derived from the documented
+  Sagas API operations (grounded in the published reference), not an official server.
 server:
   name: 180-insurance-sagas
   transport: http
@@ -67,3 +65,9 @@ tools:
 - name: criar_webhook
   description: Register a webhook destination URL
   source_operation: POST /sagas/v1/webhooks
+deployment:
+  mode: none
+  verified: derived
+  tools: 18
+  checked: '2026-08-12'
+  source: catalog MCP census
