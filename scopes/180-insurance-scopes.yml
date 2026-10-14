@@ -1,5 +1,5 @@
 generated: '2026-10-14'
-method: derived
+method: none
 source: openapi/180-insurance-sagas-api-openapi.yml
 schemes:
 - name: oauth
@@ -9,3 +9,5 @@ schemes:
     tokenUrl: https://180s-staging.us.auth0.com/oauth/token
   description: Adicione client_id e client_secret para obter um token válido.
 scopes: []
+note: The OAuth2 security scheme(s) in the OpenAPI declare no scopes, and no security requirement
+  references one.
