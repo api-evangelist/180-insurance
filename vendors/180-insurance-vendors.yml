@@ -1,0 +1,65 @@
+generated: '2026-10-14'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: aws-api-gateway
+  name: Amazon API Gateway
+  area: api-gateway
+  host: sagas.staging.180s.com.br
+  evidence: cname:execute-api.
+  signal: cname
+  confidence: high
+  kin_score: []
+- vendor: cloudflare
+  name: Cloudflare
+  area: cdn
+  host: docs.180s.com.br
+  evidence: header:cf-ray
+  signal: header
+  confidence: high
+  kin_score:
+  - https_enforced
+  - hsts
+- vendor: auth0
+  name: Auth0 (Okta)
+  area: identity
+  host: 180s-staging.us.auth0.com
+  evidence: 180-insurance-oauth-authorization-server.json names auth0 in its OAuth metadata
+  signal: oauth-metadata
+  confidence: high
+  kin_score:
+  - authentication
+reliance:
+  areas_vendor_served:
+  - api-gateway
+  - cdn
+  - identity
+  vendor_count: 3
+  areas_observed: 12
+  share_of_observable_areas: 0.25
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: not probed'
+- 180s.com.br (Website)
+- docs.180s.com.br (DeveloperPortal)
+- docs.180s.com.br (Documentation)
+- docs.180s.com.br (APIReference)
+- docs.180s.com.br (GettingStarted)
+- 180s.com.br (Support)
+- 180s.com.br (SignUp)
+- sagas.staging.180s.com.br (baseURL)

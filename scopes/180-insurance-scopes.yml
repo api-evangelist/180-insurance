@@ -1,0 +1,11 @@
+generated: '2026-10-14'
+method: derived
+source: openapi/180-insurance-sagas-api-openapi.yml
+schemes:
+- name: oauth
+  source: openapi/180-insurance-sagas-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://180s-staging.us.auth0.com/oauth/token
+  description: Adicione client_id e client_secret para obter um token válido.
+scopes: []

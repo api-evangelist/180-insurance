@@ -1,0 +1,50 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/180-insurance-sagas-api-openapi.yml
+vocabulary:
+  name: 180 Insurance Domain Vocabulary
+  description: 'Terms declared by 180 Insurance''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: Propostas
+    definition: 'Resource group in the contract; its operation GET /sagas/v1/boleto/{payment-intent-id}: Retorna o PDF do boleto.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml
+  - term: Produtos
+    definition: 'Resource group in the contract; its operation GET /sagas/v1/combos: Endpoint utilizado para listar os detalhes das configurações
+      de produtos.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml
+  - term: Cotações
+    definition: 'Resource group in the contract; its operation POST /sagas/v1/cotacoes: Endpoint usado para cotar o seguro de acordo com o risco
+      informado e coberturas escolhidas.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml
+  - term: Vendas
+    definition: 'Resource group in the contract; its operation GET /sagas/v1/documentos/vendas/{id-venda}/produtos/{id-produto}: Obter certificado
+      de venda emitido para o cliente contratante.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml
+  - term: Renovações
+    definition: 'Resource group in the contract; its operation GET /sagas/v1/renovacoes: Lista as renovações existentes.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml
+  - term: Sinistros
+    definition: 'Resource group in the contract; its operation POST /sagas/v1/sinistros/whitelabel/gerar-url: **⚠️ Endpoint em desenvolvimento
+      (WIP).** O comportamento e contrato podem sofrer alterações.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml
+  - term: Webhooks
+    definition: 'Resource group in the contract; its operation GET /sagas/v1/webhooks: Endpoint utilizado para obter os webhooks ativos e suas
+      respectivas urls.'
+    tags:
+    - Resource Group
+    source: openapi/180-insurance-sagas-api-openapi.yml

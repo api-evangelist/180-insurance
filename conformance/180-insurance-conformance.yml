@@ -2,12 +2,9 @@ generated: '2026-07-17'
 method: searched
 source: https://180s.com.br/tecnologia-180/
 compliance_docs: https://180s.com.br/tecnologia-180/
-summary: >-
-  180 Seguros publishes a security & compliance posture for the Sagas API: AICPA
-  SOC 2 (Type 1), Brazilian LGPD data-protection compliance, and SUSEP Circular
-  638 (insurance-regulator) compliance, with Okta / Auth0 / Vanta as the
-  identity and continuous-compliance tooling. The API also conforms to OAuth2
-  client-credentials, RFC 9457 problem-details errors, and cursor pagination.
+summary: '180 Seguros publishes a security & compliance posture for the Sagas API: AICPA SOC 2 (Type 1), Brazilian LGPD data-protection compliance,
+  and SUSEP Circular 638 (insurance-regulator) compliance, with Okta / Auth0 / Vanta as the identity and continuous-compliance tooling. The API
+  also conforms to OAuth2 client-credentials, RFC 9457 problem-details errors, and cursor pagination.'
 standards:
 - id: oauth2
   conforms: true
@@ -31,3 +28,12 @@ standards:
   conforms: false
 - id: json-api
   conforms: false
+- id: openapi-3.0
+  conforms: true
+  evidence: the document declares 3.0.0
+- id: rfc9457
+  conforms: false
+  evidence: no response declares application/problem+json
+- id: idempotency
+  conforms: false
+  evidence: no idempotency key parameter on mutating operations

@@ -1,19 +1,17 @@
 aid: 180-insurance
+
 name: 180 Insurance
-description: >-
-  180 Seguros (180 Insurance) is the first tech-native insurer in Brazil, an
-  SUSEP-authorized insurtech that lets fintechs, digital banks, credit
-  cooperatives and other financial and non-financial businesses embed insurance
-  into their own products through a single API — the Sagas API. The platform
-  covers the full insurance lifecycle: product/combo listing, quotation
-  (cotação), proposal (proposta), sale/policy issuance (venda), endorsements,
-  renewals (renovações) and claims (sinistros), plus HMAC-signed webhooks for
-  real-time visibility. Authentication is OAuth2 client-credentials via Auth0,
-  errors follow RFC 9457 problem-details, and the company publishes a security
-  posture including AICPA SOC 2, LGPD and SUSEP Circular 638 compliance. 180
-  Seguros is backed by 8VC, Monashees, Dragoneer, Atlantico and Canary, and was
-  added to the API Evangelist network as an 8VC portfolio company.
+
+description: '180 Seguros (180 Insurance) is the first tech-native insurer in Brazil, an SUSEP-authorized insurtech that lets fintechs, digital
+  banks, credit cooperatives and other financial and non-financial businesses embed insurance into their own products through a single API — the
+  Sagas API. The platform covers the full insurance lifecycle: product/combo listing, quotation (cotação), proposal (proposta), sale/policy issuance
+  (venda), endorsements, renewals (renovações) and claims (sinistros), plus HMAC-signed webhooks for real-time visibility. Authentication is OAuth2
+  client-credentials via Auth0, errors follow RFC 9457 problem-details, and the company publishes a security posture including AICPA SOC 2, LGPD
+  and SUSEP Circular 638 compliance. 180 Seguros is backed by 8VC, Monashees, Dragoneer, Atlantico and Canary, and was added to the API Evangelist
+  network as an 8VC portfolio company.'
+
 url: https://raw.githubusercontent.com/api-evangelist/180-insurance/refs/heads/main/apis.yml
+
 deliveryModel:
   model: saas
   open_source: false
@@ -25,6 +23,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -37,19 +36,32 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
+
 image: https://files.readme.io/21b0f8e-small-180_seguros_logo.jpeg
+
 x-type: company
+
 x-source: vc-portfolio
+
 x-backed-by:
 - 8vc
+
 x-tier: stub
+
 x-tier-reason: portfolio-lead
+
 specificationVersion: '0.23'
+
 created: '2026-07-17'
+
 modified: '2026-10-06'
+
 x-docs-platform: readme
+
 x-docs-platform-confidence: high
+
 x-docs-platform-checked: 2026-09-17
+
 tags:
 - Company
 - Insurtech
@@ -58,6 +70,7 @@ tags:
 - Brazil
 - Fintech
 - Webhook
+
 tags_raw:
 - Company
 - Insurtech
@@ -67,37 +80,28 @@ tags_raw:
 - Fintech
 - API
 - Webhooks
-apis:
-- name: 180 Seguros Sagas API
-  description: >-
-    Single embedded-insurance API covering the full lifecycle — quotation,
-    proposal, sale/policy issuance, endorsement, renewal, claims and webhooks.
-  humanURL: https://docs.180s.com.br/reference/introducao
-  baseURL: https://sagas.staging.180s.com.br
-  properties:
-  - type: Documentation
-    url: https://docs.180s.com.br/reference/introducao
-  - type: APIReference
-    url: https://docs.180s.com.br/reference
-  - type: Authentication
-    url: authentication/180-insurance-authentication.yml
-  - type: ErrorCatalog
-    url: errors/180-insurance-problem-types.yml
-  - type: Webhooks
-    url: asyncapi/180-insurance-webhooks.yml
-  - type: X-MCPServerCandidate
-    url: mcp/180-insurance-mcp.yml
-    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
-  - type: Conventions
-    url: conventions/180-insurance-conventions.yml
-  - type: DataModel
-    url: data-model/180-insurance-data-model.yml
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/180-insurance-agentic-access.yml
+- type: Spectral
+  url: rules/180-insurance-rules.yml
+- type: Vocabulary
+  url: vocabulary/180-insurance-vocabulary.yml
+- type: Deprecation
+  url: lifecycle/180-insurance-lifecycle.yml
+- type: Hosts
+  url: hosts/180-insurance-hosts.yml
+- type: Vendors
+  url: vendors/180-insurance-vendors.yml
+- type: OAuthScopes
+  url: scopes/180-insurance-scopes.yml
 - url: https://180s.com.br/feed/
   type: BlogRSS
 - type: Website
@@ -132,7 +136,9 @@ common:
   url: asyncapi/180-insurance-webhooks.yml
 - type: X-MCPServerCandidate
   url: mcp/180-insurance-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
+    API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
+    the artifact-type surfaces with a server that does not exist.'
 - type: Lifecycle
   url: lifecycle/180-insurance-lifecycle.yml
 - type: Conformance
@@ -151,8 +157,45 @@ common:
   url: llms/180-insurance-llms.txt
 - type: AgentSkill
   url: skills/_index.yml
+
+apis:
+- name: 180 Seguros Sagas API
+  description: Single embedded-insurance API covering the full lifecycle — quotation, proposal, sale/policy issuance, endorsement, renewal, claims
+    and webhooks.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  properties:
+  - url: openapi/180-insurance-sagas-api-openapi.yml
+    type: OpenAPI
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
+      API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
+      the artifact-type surfaces with a server that does not exist.'
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
+  aid: 180-insurance:180-seguros-sagas-api
+
 x-enrichment:
   date: '2026-07-19'
   status: backfilled
   pass: local-v1
   note: backfilled from .gitignore signal + verified work evidence
+
+x-readme-harvest:
+  date: '2026-10-14'
+  ops: 33
+  tool: harvest-readme-openapi.py
+  portal: https://docs.180s.com.br

@@ -1,0 +1,63 @@
+generated: '2026-10-14'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 4
+  own: 3
+  other_domain: 0
+  platform: 1
+  roles:
+  - portal
+  - sandbox
+  - source
+  - website
+hosts:
+- host: 180s.com.br
+  found_by:
+  - pointer
+  types:
+  - BlogRSS
+  - Website
+  - Blog
+  - TermsOfService
+  - PrivacyPolicy
+  - Support
+  - SignUp
+  - Compliance
+  serves: []
+  registrable_domain: 180s.com.br
+  role: website
+  relation: own
+- host: docs.180s.com.br
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  serves:
+  - docs
+  registrable_domain: 180s.com.br
+  role: portal
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: sagas.staging.180s.com.br
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: 180s.com.br
+  role: sandbox
+  relation: own
