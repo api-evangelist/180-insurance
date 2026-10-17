@@ -1,0 +1,1805 @@
+openapi: 3.2.0
+info:
+  title: Sagas Renovações API
+  version: v1
+  contact:
+    email: engineers@180s.com.br
+servers:
+- url: //sagas.staging.180s.com.br
+security:
+- oauth: []
+tags:
+- name: Renovações
+paths:
+  /sagas/v1/renovacoes:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/RenovacoesResposta
+                properties:
+                  renovacoes:
+                    type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-out/RenovacaoResposta
+                      properties:
+                        instante-cancelamento:
+                          type: string
+                          format: date-time
+                        instante-atualizacao:
+                          type: string
+                          format: date-time
+                        valida-ate:
+                          type: string
+                          format: date-time
+                        pagamento:
+                          type: object
+                          properties:
+                            debito-em-conta:
+                              type: object
+                              properties:
+                                conta-bancaria:
+                                  type: object
+                                  title: camaleao.lib.schema.contracts.sagas.model/ContaBancaria
+                                  properties:
+                                    banco:
+                                      type: string
+                                      pattern: ^([0-9]{3}|[0-9]{8})$
+                                      example: '112'
+                                    agencia:
+                                      type: string
+                                      pattern: ^[0-9]*$
+                                      example: 0209621168
+                                    conta:
+                                      type: string
+                                      pattern: ^[0-9]*$
+                                      example: '239'
+                                    agencia-digito-verificador:
+                                      type: string
+                                    conta-digito-verificador:
+                                      type: string
+                                  additionalProperties: false
+                                  required:
+                                  - banco
+                                  - agencia
+                                  - conta
+                                parcelas:
+                                  type: integer
+                                  format: int32
+                                  example: 16
+                              additionalProperties: false
+                              required:
+                              - conta-bancaria
+                              - parcelas
+                            propriedades:
+                              type: object
+                              title: camaleao.lib.properties.schema/Materialized
+                              additionalProperties:
+                                example: '2'
+                            gateway-session-180:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.model/GatewaySession180
+                              properties:
+                                gateway-session:
+                                  type: string
+                                url:
+                                  type: string
+                                metodo:
+                                  type: object
+                                  title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                                  properties:
+                                    tipo:
+                                      type: string
+                                      enum:
+                                      - boleto
+                                      - pix
+                                      - cartao-de-credito
+                                    cobranca:
+                                      type: object
+                                      title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                      properties:
+                                        tipo:
+                                          type: string
+                                          enum:
+                                          - recorrente
+                                          - unica
+                                          - parcelada
+                                        ciclos:
+                                          type: integer
+                                          format: int32
+                                          example: 21
+                                      additionalProperties: false
+                                      required:
+                                      - tipo
+                                      - ciclos
+                                      example:
+                                        tipo: unica
+                                        ciclos: 1
+                                  additionalProperties: false
+                                  required:
+                                  - tipo
+                                  - cobranca
+                              additionalProperties: false
+                              example:
+                                gateway-session: ''
+                            link-pagamento-180:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.model/LinkPagamento180
+                              properties:
+                                url:
+                                  type: string
+                                metodo:
+                                  type: object
+                                  title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                                  properties:
+                                    tipo:
+                                      type: string
+                                      enum:
+                                      - boleto
+                                      - pix
+                                      - cartao-de-credito
+                                    cobranca:
+                                      type: object
+                                      title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                      properties:
+                                        tipo:
+                                          type: string
+                                          enum:
+                                          - recorrente
+                                          - unica
+                                          - parcelada
+                                        ciclos:
+                                          type: integer
+                                          format: int32
+                                          example: 43
+                                      additionalProperties: false
+                                      required:
+                                      - tipo
+                                      - ciclos
+                                      example:
+                                        tipo: unica
+                                        ciclos: 1
+                                  additionalProperties: false
+                                  required:
+                                  - tipo
+                                  - cobranca
+                              additionalProperties: false
+                            cartao-de-credito:
+                              type: object
+                              properties:
+                                reserva-efetuada:
+                                  type: boolean
+                                cobranca-efetuada:
+                                  type: boolean
+                              additionalProperties: false
+                            gateway-token-180:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.model/GatewayToken180
+                              properties:
+                                gateway-token:
+                                  type: string
+                                metodo:
+                                  type: object
+                                  title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                                  properties:
+                                    tipo:
+                                      type: string
+                                      enum:
+                                      - boleto
+                                      - pix
+                                      - cartao-de-credito
+                                    cobranca:
+                                      type: object
+                                      title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                      properties:
+                                        tipo:
+                                          type: string
+                                          enum:
+                                          - recorrente
+                                          - unica
+                                          - parcelada
+                                        ciclos:
+                                          type: integer
+                                          format: int32
+                                          example: 53
+                                      additionalProperties: false
+                                      required:
+                                      - tipo
+                                      - ciclos
+                                      example:
+                                        tipo: parcelada
+                                        ciclos: 26
+                                  additionalProperties: false
+                                  required:
+                                  - tipo
+                                  - cobranca
+                                url:
+                                  type: string
+                                mensagem-gateway:
+                                  type: string
+                              additionalProperties: false
+                              required:
+                              - gateway-token
+                              - metodo
+                            fatura:
+                              type: object
+                              properties:
+                                data-pagamento:
+                                  type: string
+                                  pattern: ^\d{4}-\d{2}-\d{2}$
+                                  example: '2032-06-22'
+                                data-vencimento:
+                                  type: string
+                                  pattern: ^\d{4}-\d{2}-\d{2}$
+                                  example: '2038-06-09'
+                                parcelas:
+                                  type: integer
+                                  format: int32
+                                  example: 2
+                                metodo-pagamento-canal:
+                                  type: string
+                                  enum:
+                                  - cartao-de-credito
+                                  - debito-em-conta
+                              additionalProperties: false
+                            saldo-reembolso:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.wire-out/SaldoReembolsoResposta
+                              properties:
+                                valor-reembolso:
+                                  type: number
+                                  format: double
+                                  example: 3.25
+                                id-seguro-cancelado:
+                                  type: string
+                                  format: uuid
+                              additionalProperties: false
+                              required:
+                              - valor-reembolso
+                              - id-seguro-cancelado
+                            metodo-pagamento:
+                              type: string
+                              enum:
+                              - gateway-token-180
+                              - gateway-session-180
+                              - link-pagamento-180
+                              - saldo-reembolso
+                              - cartao-de-credito
+                              - fatura
+                              - debito-em-conta
+                          additionalProperties: false
+                          required:
+                          - metodo-pagamento
+                          example:
+                            metodo-pagamento: gateway-token-180
+                            cartao-de-credito: {}
+                            debito-em-conta:
+                              conta-bancaria:
+                                banco: '42441180'
+                                agencia: '4933258'
+                                conta: '977123896'
+                                agencia-digito-verificador: b]6Pb
+                              parcelas: 53
+                            fatura:
+                              data-vencimento: '1966-10-24'
+                              metodo-pagamento-canal: debito-em-conta
+                            gateway-token-180:
+                              gateway-token: '[Q:[hSvbEF'
+                              metodo:
+                                tipo: boleto
+                                cobranca:
+                                  tipo: recorrente
+                                  ciclos: 22
+                              url: pn<giNBdg^
+                              mensagem-gateway: e"_A'z
+                        vigencia-original:
+                          type: object
+                          properties:
+                            instante-vigencia-inicio:
+                              type: string
+                              format: date-time
+                            instante-vigencia-fim:
+                              type: string
+                              format: date-time
+                          additionalProperties: false
+                          required:
+                          - instante-vigencia-inicio
+                          - instante-vigencia-fim
+                        id-renovacao:
+                          type: string
+                          format: uuid
+                        id-proposta:
+                          type: string
+                          format: uuid
+                        id-cotacao-sugerida:
+                          type: string
+                          format: uuid
+                        status:
+                          type: string
+                          enum:
+                          - cancelada
+                          - disponivel
+                          - completa
+                          - iniciada
+                        instante-criacao:
+                          type: string
+                          format: date-time
+                        vigencia-renovacao:
+                          type: object
+                          properties:
+                            instante-vigencia-inicio:
+                              type: string
+                              format: date-time
+                            instante-vigencia-fim:
+                              type: string
+                              format: date-time
+                          additionalProperties: false
+                          required:
+                          - instante-vigencia-inicio
+                          - instante-vigencia-fim
+                        id-cotacao:
+                          type: string
+                          format: uuid
+                        id-combo-produto:
+                          type: string
+                          format: uuid
+                        id-afiliacao:
+                          type: string
+                          format: uuid
+                        instante-inicio:
+                          type: string
+                          format: date-time
+                        id-venda:
+                          type: string
+                          format: uuid
+                        instante-conclusao:
+                          type: string
+                          format: date-time
+                      additionalProperties: false
+                      required:
+                      - id-cotacao-sugerida
+                      - valida-ate
+                      - instante-atualizacao
+                      - vigencia-original
+                      - vigencia-renovacao
+                      - status
+                      - id-renovacao
+                      - id-combo-produto
+                      - instante-criacao
+                  pagina-anterior:
+                    type: string
+                  pagina-seguinte:
+                    type: string
+                additionalProperties: false
+                required:
+                - renovacoes
+      parameters:
+      - in: query
+        name: limite
+        description: ''
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: pagina-seguinte
+        description: ''
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: pagina-anterior
+        description: ''
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: status
+        description: ''
+        required: false
+        schema:
+          type: string
+          enum:
+          - cancelada
+          - disponivel
+          - completa
+          - iniciada
+      tags:
+      - Renovações
+      summary: Listar renovações
+      description: 'Lista as renovações existentes.
+
+
+        Este endpoint possui paginação; confira a documentação em https://docs.180s.com.br/reference/paginação.'
+      operationId: getSagasV1Renovacoes
+      x-operation-id-source: derived
+  /sagas/v1/renovacoes/{id-renovacao}:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/RenovacaoResposta
+                properties:
+                  instante-cancelamento:
+                    type: string
+                    format: date-time
+                  instante-atualizacao:
+                    type: string
+                    format: date-time
+                  valida-ate:
+                    type: string
+                    format: date-time
+                  pagamento:
+                    type: object
+                    properties:
+                      debito-em-conta:
+                        type: object
+                        properties:
+                          conta-bancaria:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/ContaBancaria
+                            properties:
+                              banco:
+                                type: string
+                                pattern: ^([0-9]{3}|[0-9]{8})$
+                                example: '39422334'
+                              agencia:
+                                type: string
+                                pattern: ^[0-9]*$
+                                example: '97'
+                              conta:
+                                type: string
+                                pattern: ^[0-9]*$
+                                example: '7666351'
+                              agencia-digito-verificador:
+                                type: string
+                              conta-digito-verificador:
+                                type: string
+                            additionalProperties: false
+                            required:
+                            - banco
+                            - agencia
+                            - conta
+                          parcelas:
+                            type: integer
+                            format: int32
+                            example: 21
+                        additionalProperties: false
+                        required:
+                        - conta-bancaria
+                        - parcelas
+                      propriedades:
+                        type: object
+                        title: camaleao.lib.properties.schema/Materialized
+                        additionalProperties:
+                          example: -0.35888671875
+                      gateway-session-180:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.model/GatewaySession180
+                        properties:
+                          gateway-session:
+                            type: string
+                          url:
+                            type: string
+                          metodo:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                            properties:
+                              tipo:
+                                type: string
+                                enum:
+                                - boleto
+                                - pix
+                                - cartao-de-credito
+                              cobranca:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                properties:
+                                  tipo:
+                                    type: string
+                                    enum:
+                                    - recorrente
+                                    - unica
+                                    - parcelada
+                                  ciclos:
+                                    type: integer
+                                    format: int32
+                                    example: 106
+                                additionalProperties: false
+                                required:
+                                - tipo
+                                - ciclos
+                                example:
+                                  tipo: recorrente
+                                  ciclos: 42
+                            additionalProperties: false
+                            required:
+                            - tipo
+                            - cobranca
+                        additionalProperties: false
+                        example:
+                          gateway-session: Ki8e|I/bQ@
+                          url: '|84.&k}9'
+                          metodo:
+                            tipo: cartao-de-credito
+                            cobranca:
+                              tipo: parcelada
+                              ciclos: 29
+                      link-pagamento-180:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.model/LinkPagamento180
+                        properties:
+                          url:
+                            type: string
+                          metodo:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                            properties:
+                              tipo:
+                                type: string
+                                enum:
+                                - boleto
+                                - pix
+                                - cartao-de-credito
+                              cobranca:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                properties:
+                                  tipo:
+                                    type: string
+                                    enum:
+                                    - recorrente
+                                    - unica
+                                    - parcelada
+                                  ciclos:
+                                    type: integer
+                                    format: int32
+                                    example: 487
+                                additionalProperties: false
+                                required:
+                                - tipo
+                                - ciclos
+                                example:
+                                  tipo: recorrente
+                                  ciclos: 15
+                            additionalProperties: false
+                            required:
+                            - tipo
+                            - cobranca
+                        additionalProperties: false
+                      cartao-de-credito:
+                        type: object
+                        properties:
+                          reserva-efetuada:
+                            type: boolean
+                          cobranca-efetuada:
+                            type: boolean
+                        additionalProperties: false
+                      gateway-token-180:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.model/GatewayToken180
+                        properties:
+                          gateway-token:
+                            type: string
+                          metodo:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                            properties:
+                              tipo:
+                                type: string
+                                enum:
+                                - boleto
+                                - pix
+                                - cartao-de-credito
+                              cobranca:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                properties:
+                                  tipo:
+                                    type: string
+                                    enum:
+                                    - recorrente
+                                    - unica
+                                    - parcelada
+                                  ciclos:
+                                    type: integer
+                                    format: int32
+                                    example: 29
+                                additionalProperties: false
+                                required:
+                                - tipo
+                                - ciclos
+                                example:
+                                  tipo: recorrente
+                                  ciclos: 25
+                            additionalProperties: false
+                            required:
+                            - tipo
+                            - cobranca
+                          url:
+                            type: string
+                          mensagem-gateway:
+                            type: string
+                        additionalProperties: false
+                        required:
+                        - gateway-token
+                        - metodo
+                      fatura:
+                        type: object
+                        properties:
+                          data-pagamento:
+                            type: string
+                            pattern: ^\d{4}-\d{2}-\d{2}$
+                            example: '1939-12-04'
+                          data-vencimento:
+                            type: string
+                            pattern: ^\d{4}-\d{2}-\d{2}$
+                            example: '2039-04-14'
+                          parcelas:
+                            type: integer
+                            format: int32
+                            example: 49
+                          metodo-pagamento-canal:
+                            type: string
+                            enum:
+                            - cartao-de-credito
+                            - debito-em-conta
+                        additionalProperties: false
+                      saldo-reembolso:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-out/SaldoReembolsoResposta
+                        properties:
+                          valor-reembolso:
+                            type: number
+                            format: double
+                            example: 1.74609375
+                          id-seguro-cancelado:
+                            type: string
+                            format: uuid
+                        additionalProperties: false
+                        required:
+                        - valor-reembolso
+                        - id-seguro-cancelado
+                      metodo-pagamento:
+                        type: string
+                        enum:
+                        - gateway-token-180
+                        - gateway-session-180
+                        - link-pagamento-180
+                        - saldo-reembolso
+                        - cartao-de-credito
+                        - fatura
+                        - debito-em-conta
+                    additionalProperties: false
+                    required:
+                    - metodo-pagamento
+                    example:
+                      metodo-pagamento: gateway-token-180
+                      cartao-de-credito:
+                        cobranca-efetuada: false
+                      fatura:
+                        metodo-pagamento-canal: debito-em-conta
+                      gateway-token-180:
+                        gateway-token: 1z ;"'Zm^o
+                        metodo:
+                          tipo: pix
+                          cobranca:
+                            tipo: parcelada
+                            ciclos: 3
+                        mensagem-gateway: J9Z4UL}
+                      gateway-session-180:
+                        url: I#XS
+                        metodo:
+                          tipo: cartao-de-credito
+                          cobranca:
+                            tipo: parcelada
+                            ciclos: 27
+                      saldo-reembolso:
+                        valor-reembolso: 1.6875
+                        id-seguro-cancelado: 2ac38c08-6be6-4f4a-90fc-d0d48c00aef6
+                  vigencia-original:
+                    type: object
+                    properties:
+                      instante-vigencia-inicio:
+                        type: string
+                        format: date-time
+                      instante-vigencia-fim:
+                        type: string
+                        format: date-time
+                    additionalProperties: false
+                    required:
+                    - instante-vigencia-inicio
+                    - instante-vigencia-fim
+                  id-renovacao:
+                    type: string
+                    format: uuid
+                  id-proposta:
+                    type: string
+                    format: uuid
+                  id-cotacao-sugerida:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - cancelada
+                    - disponivel
+                    - completa
+                    - iniciada
+                  instante-criacao:
+                    type: string
+                    format: date-time
+                  vigencia-renovacao:
+                    type: object
+                    properties:
+                      instante-vigencia-inicio:
+                        type: string
+                        format: date-time
+                      instante-vigencia-fim:
+                        type: string
+                        format: date-time
+                    additionalProperties: false
+                    required:
+                    - instante-vigencia-inicio
+                    - instante-vigencia-fim
+                  id-cotacao:
+                    type: string
+                    format: uuid
+                  id-combo-produto:
+                    type: string
+                    format: uuid
+                  id-afiliacao:
+                    type: string
+                    format: uuid
+                  instante-inicio:
+                    type: string
+                    format: date-time
+                  id-venda:
+                    type: string
+                    format: uuid
+                  instante-conclusao:
+                    type: string
+                    format: date-time
+                additionalProperties: false
+                required:
+                - id-cotacao-sugerida
+                - valida-ate
+                - instante-atualizacao
+                - vigencia-original
+                - vigencia-renovacao
+                - status
+                - id-renovacao
+                - id-combo-produto
+                - instante-criacao
+      parameters:
+      - in: path
+        name: id-renovacao
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Renovações
+      summary: Obter detalhes sobre uma renovação
+      operationId: getSagasV1RenovacoesByIdRenovacao
+      x-operation-id-source: derived
+  /sagas/v1/renovacoes/{id-renovacao}/iniciar:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/RenovacaoResposta
+                properties:
+                  instante-cancelamento:
+                    type: string
+                    format: date-time
+                  instante-atualizacao:
+                    type: string
+                    format: date-time
+                  valida-ate:
+                    type: string
+                    format: date-time
+                  pagamento:
+                    type: object
+                    properties:
+                      debito-em-conta:
+                        type: object
+                        properties:
+                          conta-bancaria:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/ContaBancaria
+                            properties:
+                              banco:
+                                type: string
+                                pattern: ^([0-9]{3}|[0-9]{8})$
+                                example: '69515146'
+                              agencia:
+                                type: string
+                                pattern: ^[0-9]*$
+                                example: '822'
+                              conta:
+                                type: string
+                                pattern: ^[0-9]*$
+                                example: '54'
+                              agencia-digito-verificador:
+                                type: string
+                              conta-digito-verificador:
+                                type: string
+                            additionalProperties: false
+                            required:
+                            - banco
+                            - agencia
+                            - conta
+                          parcelas:
+                            type: integer
+                            format: int32
+                            example: 33
+                        additionalProperties: false
+                        required:
+                        - conta-bancaria
+                        - parcelas
+                      propriedades:
+                        type: object
+                        title: camaleao.lib.properties.schema/Materialized
+                        additionalProperties:
+                          example: _zv
+                      gateway-session-180:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.model/GatewaySession180
+                        properties:
+                          gateway-session:
+                            type: string
+                          url:
+                            type: string
+                          metodo:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                            properties:
+                              tipo:
+                                type: string
+                                enum:
+                                - boleto
+                                - pix
+                                - cartao-de-credito
+                              cobranca:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                properties:
+                                  tipo:
+                                    type: string
+                                    enum:
+                                    - recorrente
+                                    - unica
+                                    - parcelada
+                                  ciclos:
+                                    type: integer
+                                    format: int32
+                                    example: 3
+                                additionalProperties: false
+                                required:
+                                - tipo
+                                - ciclos
+                                example:
+                                  tipo: recorrente
+                                  ciclos: 23
+                            additionalProperties: false
+                            required:
+                            - tipo
+                            - cobranca
+                        additionalProperties: false
+                        example:
+                          url: dFe=%fY;
+                      link-pagamento-180:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.model/LinkPagamento180
+                        properties:
+                          url:
+                            type: string
+                          metodo:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                            properties:
+                              tipo:
+                                type: string
+                                enum:
+                                - boleto
+                                - pix
+                                - cartao-de-credito
+                              cobranca:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                properties:
+                                  tipo:
+                                    type: string
+                                    enum:
+                                    - recorrente
+                                    - unica
+                                    - parcelada
+                                  ciclos:
+                                    type: integer
+                                    format: int32
+                                    example: 2
+                                additionalProperties: false
+                                required:
+                                - tipo
+                                - ciclos
+                                example:
+                                  tipo: unica
+                                  ciclos: 1
+                            additionalProperties: false
+                            required:
+                            - tipo
+                            - cobranca
+                        additionalProperties: false
+                      cartao-de-credito:
+                        type: object
+                        properties:
+                          reserva-efetuada:
+                            type: boolean
+                          cobranca-efetuada:
+                            type: boolean
+                        additionalProperties: false
+                      gateway-token-180:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.model/GatewayToken180
+                        properties:
+                          gateway-token:
+                            type: string
+                          metodo:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                            properties:
+                              tipo:
+                                type: string
+                                enum:
+                                - boleto
+                                - pix
+                                - cartao-de-credito
+                              cobranca:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                                properties:
+                                  tipo:
+                                    type: string
+                                    enum:
+                                    - recorrente
+                                    - unica
+                                    - parcelada
+                                  ciclos:
+                                    type: integer
+                                    format: int32
+                                    example: 74
+                                additionalProperties: false
+                                required:
+                                - tipo
+                                - ciclos
+                                example:
+                                  tipo: unica
+                                  ciclos: 1
+                            additionalProperties: false
+                            required:
+                            - tipo
+                            - cobranca
+                          url:
+                            type: string
+                          mensagem-gateway:
+                            type: string
+                        additionalProperties: false
+                        required:
+                        - gateway-token
+                        - metodo
+                      fatura:
+                        type: object
+                        properties:
+                          data-pagamento:
+                            type: string
+                            pattern: ^\d{4}-\d{2}-\d{2}$
+                            example: '1932-12-29'
+                          data-vencimento:
+                            type: string
+                            pattern: ^\d{4}-\d{2}-\d{2}$
+                            example: '1930-06-12'
+                          parcelas:
+                            type: integer
+                            format: int32
+                            example: 2
+                          metodo-pagamento-canal:
+                            type: string
+                            enum:
+                            - cartao-de-credito
+                            - debito-em-conta
+                        additionalProperties: false
+                      saldo-reembolso:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-out/SaldoReembolsoResposta
+                        properties:
+                          valor-reembolso:
+                            type: number
+                            format: double
+                            example: -1.291015625
+                          id-seguro-cancelado:
+                            type: string
+                            format: uuid
+                        additionalProperties: false
+                        required:
+                        - valor-reembolso
+                        - id-seguro-cancelado
+                      metodo-pagamento:
+                        type: string
+                        enum:
+                        - gateway-token-180
+                        - gateway-session-180
+                        - link-pagamento-180
+                        - saldo-reembolso
+                        - cartao-de-credito
+                        - fatura
+                        - debito-em-conta
+                    additionalProperties: false
+                    required:
+                    - metodo-pagamento
+                    example:
+                      metodo-pagamento: cartao-de-credito
+                      cartao-de-credito:
+                        reserva-efetuada: false
+                        cobranca-efetuada: false
+                      link-pagamento-180:
+                        url: / Dzp$
+                        metodo:
+                          tipo: cartao-de-credito
+                          cobranca:
+                            tipo: unica
+                            ciclos: 1
+                      saldo-reembolso:
+                        valor-reembolso: 0.25
+                        id-seguro-cancelado: b8fdfe2f-e296-4774-8c3a-56ae3b436783
+                  vigencia-original:
+                    type: object
+                    properties:
+                      instante-vigencia-inicio:
+                        type: string
+                        format: date-time
+                      instante-vigencia-fim:
+                        type: string
+                        format: date-time
+                    additionalProperties: false
+                    required:
+                    - instante-vigencia-inicio
+                    - instante-vigencia-fim
+                  id-renovacao:
+                    type: string
+                    format: uuid
+                  id-proposta:
+                    type: string
+                    format: uuid
+                  id-cotacao-sugerida:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - cancelada
+                    - disponivel
+                    - completa
+                    - iniciada
+                  instante-criacao:
+                    type: string
+                    format: date-time
+                  vigencia-renovacao:
+                    type: object
+                    properties:
+                      instante-vigencia-inicio:
+                        type: string
+                        format: date-time
+                      instante-vigencia-fim:
+                        type: string
+                        format: date-time
+                    additionalProperties: false
+                    required:
+                    - instante-vigencia-inicio
+                    - instante-vigencia-fim
+                  id-cotacao:
+                    type: string
+                    format: uuid
+                  id-combo-produto:
+                    type: string
+                    format: uuid
+                  id-afiliacao:
+                    type: string
+                    format: uuid
+                  instante-inicio:
+                    type: string
+                    format: date-time
+                  id-venda:
+                    type: string
+                    format: uuid
+                  instante-conclusao:
+                    type: string
+                    format: date-time
+                additionalProperties: false
+                required:
+                - id-cotacao-sugerida
+                - valida-ate
+                - instante-atualizacao
+                - vigencia-original
+                - vigencia-renovacao
+                - status
+                - id-renovacao
+                - id-combo-produto
+                - instante-criacao
+      parameters:
+      - in: path
+        name: id-renovacao
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type:
+              - object
+              - 'null'
+              properties:
+                pagamento:
+                  type: object
+                  properties:
+                    metodo-pagamento:
+                      type: string
+                      enum:
+                      - gateway-token-180
+                      - gateway-session-180
+                      - link-pagamento-180
+                      - cartao-de-credito
+                      - fatura
+                      - debito-em-conta
+                    cartao-de-credito:
+                      type: object
+                      properties:
+                        reserva-efetuada:
+                          type: boolean
+                        cobranca-efetuada:
+                          type: boolean
+                      additionalProperties: false
+                    debito-em-conta:
+                      type: object
+                      properties:
+                        conta-bancaria:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.model/ContaBancaria
+                          properties:
+                            banco:
+                              type: string
+                              pattern: ^([0-9]{3}|[0-9]{8})$
+                              example: '460'
+                            agencia:
+                              type: string
+                              pattern: ^[0-9]*$
+                              example: '2881730712'
+                            conta:
+                              type: string
+                              pattern: ^[0-9]*$
+                              example: '34'
+                            agencia-digito-verificador:
+                              type: string
+                            conta-digito-verificador:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - banco
+                          - agencia
+                          - conta
+                        parcelas:
+                          type: integer
+                          format: int32
+                          example: 7
+                      additionalProperties: false
+                      required:
+                      - conta-bancaria
+                      - parcelas
+                    fatura:
+                      type: object
+                      properties:
+                        data-pagamento:
+                          type: string
+                          pattern: ^\d{4}-\d{2}-\d{2}$
+                          example: '2000-12-06'
+                        data-vencimento:
+                          type: string
+                          pattern: ^\d{4}-\d{2}-\d{2}$
+                          example: '1920-10-19'
+                        parcelas:
+                          type: integer
+                          format: int32
+                          example: 5
+                        metodo-pagamento-canal:
+                          type: string
+                          enum:
+                          - cartao-de-credito
+                          - debito-em-conta
+                      additionalProperties: false
+                    link-pagamento-180:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.model/LinkPagamento180
+                      properties:
+                        url:
+                          type: string
+                        metodo:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                          properties:
+                            tipo:
+                              type: string
+                              enum:
+                              - boleto
+                              - pix
+                              - cartao-de-credito
+                            cobranca:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                              properties:
+                                tipo:
+                                  type: string
+                                  enum:
+                                  - recorrente
+                                  - unica
+                                  - parcelada
+                                ciclos:
+                                  type: integer
+                                  format: int32
+                                  example: 5
+                              additionalProperties: false
+                              required:
+                              - tipo
+                              - ciclos
+                              example:
+                                tipo: unica
+                                ciclos: 1
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - cobranca
+                      additionalProperties: false
+                    gateway-token-180:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.model/GatewayToken180
+                      properties:
+                        gateway-token:
+                          type: string
+                        metodo:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                          properties:
+                            tipo:
+                              type: string
+                              enum:
+                              - boleto
+                              - pix
+                              - cartao-de-credito
+                            cobranca:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                              properties:
+                                tipo:
+                                  type: string
+                                  enum:
+                                  - recorrente
+                                  - unica
+                                  - parcelada
+                                ciclos:
+                                  type: integer
+                                  format: int32
+                                  example: 31
+                              additionalProperties: false
+                              required:
+                              - tipo
+                              - ciclos
+                              example:
+                                tipo: parcelada
+                                ciclos: 2
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - cobranca
+                        url:
+                          type: string
+                        mensagem-gateway:
+                          type: string
+                      additionalProperties: false
+                      required:
+                      - gateway-token
+                      - metodo
+                    gateway-session-180:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.model/GatewaySession180
+                      properties:
+                        gateway-session:
+                          type: string
+                        url:
+                          type: string
+                        metodo:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.model/MetodoPagamento
+                          properties:
+                            tipo:
+                              type: string
+                              enum:
+                              - boleto
+                              - pix
+                              - cartao-de-credito
+                            cobranca:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.model/Cobranca
+                              properties:
+                                tipo:
+                                  type: string
+                                  enum:
+                                  - recorrente
+                                  - unica
+                                  - parcelada
+                                ciclos:
+                                  type: integer
+                                  format: int32
+                                  example: 1
+                              additionalProperties: false
+                              required:
+                              - tipo
+                              - ciclos
+                              example:
+                                tipo: recorrente
+                                ciclos: 35
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - cobranca
+                      additionalProperties: false
+                      example:
+                        gateway-session: jdl,kwqXg
+                        metodo:
+                          tipo: cartao-de-credito
+                          cobranca:
+                            tipo: unica
+                            ciclos: 1
+                  additionalProperties: false
+                  required:
+                  - metodo-pagamento
+                  example:
+                    metodo-pagamento: link-pagamento-180
+                    debito-em-conta:
+                      conta-bancaria:
+                        banco: '73169478'
+                        agencia: '8'
+                        conta: '188555441'
+                      parcelas: 1
+                    link-pagamento-180:
+                      url: G
+                      metodo:
+                        tipo: boleto
+                        cobranca:
+                          tipo: parcelada
+                          ciclos: 23
+                    gateway-token-180:
+                      gateway-token: ''
+                      metodo:
+                        tipo: pix
+                        cobranca:
+                          tipo: recorrente
+                          ciclos: 11
+                      url: 751)
+                aceite:
+                  type: object
+                  properties:
+                    metodo-de-aceite:
+                      type: string
+                      enum:
+                      - consentimento-online
+                      - consentimento-area-logada
+                      - termos-e-condicoes-link
+                    consentimento-area-logada:
+                      type: object
+                      properties:
+                        ip:
+                          type: string
+                        instante:
+                          type: string
+                          format: date-time
+                        email:
+                          type: string
+                          pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                          example: jb3FIByEtm42Xb1WdmuBM1eQ6IhvCL@jb3FIByEtm42Xb1WdmuBM1eQ6IhvCL.com
+                        cpf-ou-cnpj:
+                          type: string
+                          pattern: ^([0-9]{11}|[A-Z0-9]{12}[0-9]{2})$
+                          example: '72546753000884'
+                      additionalProperties: false
+                      required:
+                      - ip
+                      - instante
+                      example:
+                        ip: '%'
+                        instante: '2003-07-17T05:32:17Z'
+                        email: Y73k7ye7ix5Gh2jclJEHwwQ@Y73k7ye7ix5Gh2jclJEHwwQ.com
+                        cpf-ou-cnpj: N2B8A3I0000380
+                    consentimento-online:
+                      type: object
+                      properties:
+                        ip:
+                          type: string
+                        instante:
+                          type: string
+                          format: date-time
+                      additionalProperties: false
+                      required:
+                      - ip
+                      - instante
+                  additionalProperties: false
+                  required:
+                  - metodo-de-aceite
+                  example:
+                    metodo-de-aceite: termos-e-condicoes-link
+                    consentimento-area-logada:
+                      ip: D5P'
+                      instante: '1997-01-15T13:23:32Z'
+                      email: 72A1l2d420hecl2@72A1l2d420hecl2.com
+                      cpf-ou-cnpj: 65FG90VF000328
+                cliente-segurado:
+                  type: object
+                  properties:
+                    tipo:
+                      type: string
+                      enum:
+                      - pessoa-fisica
+                      - pessoa-juridica
+                    pessoa-fisica:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/PessoaFisica
+                      properties:
+                        id-externo:
+                          type: string
+                        data-nascimento:
+                          type: string
+                          pattern: ^\d{4}-\d{2}-\d{2}$
+                          example: '1939-06-22'
+                        sexo:
+                          type: string
+                          enum:
+                          - feminino
+                          - masculino
+                        endereco:
+                          type: object
+                          properties:
+                            estado:
+                              type: string
+                              enum:
+                              - TO
+                              - RN
+                              - SC
+                              - AP
+                              - PR
+                              - SE
+                              - GO
+                              - RJ
+                              - PI
+                              - MG
+                              - AL
+                              - PE
+                              - SP
+                              - MA
+                              - CE
+                              - RO
+                              - BA
+                              - RS
+                              - AC
+                              - ES
+                              - MT
+                              - RR
+                              - PB
+                              - PA
+                              - DF
+                              - MS
+                              - AM
+                            cep:
+                              type: string
+                              pattern: ^[0-9]{8}$
+                              example: '49392266'
+                            tipo-residencia:
+                              type: string
+                              enum:
+                              - apartamento
+                              - casa
+                            logradouro:
+                              type: string
+                            numero:
+                              type: string
+                            bairro:
+                              type: string
+                            cidade:
+                              type: string
+                            complemento:
+                              type:
+                              - string
+                              - 'null'
+                          additionalProperties: false
+                          required:
+                          - estado
+                          - cep
+                          - logradouro
+                          - numero
+                          - bairro
+                          - cidade
+                        pep:
+                          type: boolean
+                        email:
+                          type: string
+                          pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                          example: 58G5rx1lZ38@58G5rx1lZ38.com
+                        telefone:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                          properties:
+                            codigo-pais:
+                              type: string
+                              pattern: ^\d{1,3}$
+                              example: '6'
+                            codigo-area:
+                              type: string
+                              pattern: ^\d{1,3}$
+                              example: '3'
+                            numero-telefone:
+                              type: string
+                              pattern: ^\d{7,9}$
+                              example: '70755043'
+                          additionalProperties: false
+                          required:
+                          - codigo-area
+                          - numero-telefone
+                        nome-completo:
+                          type: string
+                        cpf:
+                          type: string
+                          pattern: ^([0-9]{11})$
+                          example: '85198720933'
+                        nome-social:
+                          type: string
+                      additionalProperties: false
+                      required:
+                      - cpf
+                      - endereco
+                      - nome-completo
+                    pessoa-juridica:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/PessoaJuridica
+                      properties:
+                        cnpj:
+                          type: string
+                          pattern: ^[A-Z0-9]{12}[0-9]{2}$
+                          example: 03154897000015
+                        id-externo:
+                          type: string
+                        email:
+                          type: string
+                          pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                          example: j7v7izut2DXlaV0242wB@j7v7izut2DXlaV0242wB.com
+                        socios:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              nome-completo:
+                                type: string
+                              cpf:
+                                type: string
+                                pattern: ^([0-9]{11})$
+                                example: '94345065496'
+                              data-nascimento:
+                                type: string
+                                pattern: ^\d{4}-\d{2}-\d{2}$
+                                example: '2046-08-06'
+                              percentual-capital:
+                                type: number
+                                format: double
+                                example: 0.546875
+                              nome-social:
+                                type: string
+                            additionalProperties: false
+                            required:
+                            - nome-completo
+                            - cpf
+                            - data-nascimento
+                            - percentual-capital
+                        nome-fantasia:
+                          type: string
+                        razao-social:
+                          type: string
+                        endereco:
+                          type: object
+                          properties:
+                            estado:
+                              type: string
+                              enum:
+                              - TO
+                              - RN
+                              - SC
+                              - AP
+                              - PR
+                              - SE
+                              - GO
+                              - RJ
+                              - PI
+                              - MG
+                              - AL
+                              - PE
+                              - SP
+                              - MA
+                              - CE
+                              - RO
+                              - BA
+                              - RS
+                              - AC
+                              - ES
+                              - MT
+                              - RR
+                              - PB
+                              - PA
+                              - DF
+                              - MS
+                              - AM
+                            cep:
+                              type: string
+                              pattern: ^[0-9]{8}$
+                              example: '75115200'
+                            tipo-residencia:
+                              type: string
+                              enum:
+                              - apartamento
+                              - casa
+                            logradouro:
+                              type: string
+                            numero:
+                              type: string
+                            bairro:
+                              type: string
+                            cidade:
+                              type: string
+                            complemento:
+                              type:
+                              - string
+                              - 'null'
+                          additionalProperties: false
+                          required:
+                          - estado
+                          - cep
+                          - logradouro
+                          - numero
+                          - bairro
+                          - cidade
+                        telefone:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                          properties:
+                            codigo-pais:
+                              type: string
+                              pattern: ^\d{1,3}$
+                              example: '045'
+                            codigo-area:
+                              type: string
+                              pattern: ^\d{1,3}$
+                              example: '0'
+                            numero-telefone:
+                              type: string
+                              pattern: ^\d{7,9}$
+                              example: 06977849
+                          additionalProperties: false
+                          required:
+                          - codigo-area
+                          - numero-telefone
+                      additionalProperties: false
+                      required:
+                      - cnpj
+                      - nome-fantasia
+                      - razao-social
+                      - endereco
+                  additionalProperties: false
+                  required:
+                  - tipo
+                  example:
+                    tipo: pessoa-juridica
+                    pessoa-juridica:
+                      cnpj: '32594766000995'
+                      nome-fantasia: :GWR
+                      razao-social: 9W`<\S
+                      endereco:
+                        estado: SP
+                        cep: '88538538'
+                        logradouro: RZTk-4l_c
+                        numero: '!'
+                        bairro: W
+                        cidade: Y6+9J?*??
+                        complemento: Sr#i0Ta|#ho
+                id-cotacao:
+                  type: string
+                  format: uuid
+              additionalProperties: false
+      tags:
+      - Renovações
+      summary: Endpoint para iniciar uma renovação que está disponível
+      description: 'Permite iniciar uma renovação que está disponível.
+
+
+        É possível usar uma cotação própria ou aceitar a sugerida pela cotação.
+
+        Também é possível informar dados cadastrais do cliente, caso seja necessário.
+
+        Pode ser necessário informar a forma de pagamento e aceite, conforme requerimentos do produto sendo renovado.'
+      operationId: postSagasV1RenovacoesByIdRenovacaoIniciar
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    oauth:
+      type: oauth2
+      description: Adicione client_id e client_secret para obter um token válido.
+      flows:
+        clientCredentials:
+          tokenUrl: https://180s-staging.us.auth0.com/oauth/token
+          scopes: {}
+x-id:
+- reitit.swagger/default
+x-provenance:
+  method: searched
+  source: https://docs.180s.com.br/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.180s.com.br/reference/delete_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-boleto-payment-intent-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-combos.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-cotacoes-id-cotacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-propostas-id-proposta-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-vendas-id-venda-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes-id-renovacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id-download-url.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-vendas-id-venda.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-webhooks.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta-cliente-segurado.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-cotacoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-obter-venda.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-reenviar-comunicacao-comunicacao.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-renovacoes-id-renovacao-iniciar.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-dados-pagamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-enviar-documento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-saldo-devedor.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-whitelabel-gerar-url.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-abrir-sinistro.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-alteracoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks-id-webhook-rotacionar-chave-hmac.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks.md
+  merge:
+    pages: 33
+    deduped: 32
+    conflicts_kept_first: 0

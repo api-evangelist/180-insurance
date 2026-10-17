@@ -1,0 +1,152 @@
+openapi: 3.2.0
+info:
+  title: Sagas Produtos API
+  version: v1
+  contact:
+    email: engineers@180s.com.br
+servers:
+- url: //sagas.staging.180s.com.br
+security:
+- oauth: []
+tags:
+- name: Produtos
+paths:
+  /sagas/v1/combos:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/ListarCombosResposta
+                properties:
+                  combos:
+                    type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-out/ComboDeProdutos
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        produtos:
+                          type: array
+                          items:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.wire-out/ComboProdutoResposta
+                            properties:
+                              id-produto:
+                                type: string
+                                format: uuid
+                              titulo:
+                                type: string
+                              descricao:
+                                type: string
+                              itens:
+                                type: array
+                                items:
+                                  type: object
+                                  title: camaleao.lib.schema.contracts.sagas.wire-out/ComboProdutoItemResposta
+                                  properties:
+                                    id:
+                                      type: string
+                                      format: uuid
+                                    titulo:
+                                      type: string
+                                    descricao:
+                                      type: string
+                                    tipo:
+                                      type: string
+                                    chave:
+                                      type: string
+                                    propriedades:
+                                      type: object
+                                      title: camaleao.lib.properties.schema/Materialized
+                                      additionalProperties:
+                                        example: F_?
+                                  additionalProperties: false
+                                  required:
+                                  - id
+                                  - titulo
+                                  - descricao
+                              propriedades:
+                                type: object
+                                title: camaleao.lib.properties.schema/Materialized
+                                additionalProperties:
+                                  example: Q8sAS
+                            additionalProperties: false
+                            required:
+                            - id-produto
+                            - titulo
+                            - descricao
+                            - itens
+                      additionalProperties: false
+                      required:
+                      - id
+                      - produtos
+                additionalProperties: false
+                required:
+                - combos
+      tags:
+      - Produtos
+      summary: Listar os produtos
+      description: Endpoint utilizado para listar os detalhes das configurações de produtos.
+      operationId: getSagasV1Combos
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    oauth:
+      type: oauth2
+      description: Adicione client_id e client_secret para obter um token válido.
+      flows:
+        clientCredentials:
+          tokenUrl: https://180s-staging.us.auth0.com/oauth/token
+          scopes: {}
+x-id:
+- reitit.swagger/default
+x-provenance:
+  method: searched
+  source: https://docs.180s.com.br/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.180s.com.br/reference/delete_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-boleto-payment-intent-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-combos.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-cotacoes-id-cotacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-propostas-id-proposta-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-vendas-id-venda-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes-id-renovacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id-download-url.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-vendas-id-venda.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-webhooks.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta-cliente-segurado.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-cotacoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-obter-venda.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-reenviar-comunicacao-comunicacao.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-renovacoes-id-renovacao-iniciar.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-dados-pagamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-enviar-documento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-saldo-devedor.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-whitelabel-gerar-url.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-abrir-sinistro.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-alteracoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks-id-webhook-rotacionar-chave-hmac.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks.md
+  merge:
+    pages: 33
+    deduped: 32
+    conflicts_kept_first: 0

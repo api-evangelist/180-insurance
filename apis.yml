@@ -159,14 +159,16 @@ common:
   url: skills/_index.yml
 
 apis:
-- name: 180 Seguros Sagas API
-  description: Single embedded-insurance API covering the full lifecycle — quotation, proposal, sale/policy issuance, endorsement, renewal, claims
-    and webhooks.
+- aid: 180-insurance:180-insurance-cota-es-api
+  name: 180 Insurance Cotações API
+  description: The Cotações API from 180 Insurance — 2 operation(s) for cotações.
   humanURL: https://docs.180s.com.br/reference/introducao
   baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Cotações
   properties:
-  - url: openapi/180-insurance-sagas-api-openapi.yml
-    type: OpenAPI
+  - type: OpenAPI
+    url: openapi/180-insurance-cota-es-api-openapi.yml
   - type: Documentation
     url: https://docs.180s.com.br/reference/introducao
   - type: APIReference
@@ -179,15 +181,166 @@ apis:
     url: asyncapi/180-insurance-webhooks.yml
   - type: X-MCPServerCandidate
     url: mcp/180-insurance-mcp.yml
-    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
-      API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
-      the artifact-type surfaces with a server that does not exist.'
   - type: Conventions
     url: conventions/180-insurance-conventions.yml
   - type: DataModel
     url: data-model/180-insurance-data-model.yml
-  aid: 180-insurance:180-seguros-sagas-api
-
+- aid: 180-insurance:180-insurance-produtos-api
+  name: 180 Insurance Produtos API
+  description: The Produtos API from 180 Insurance — 1 operation(s) for produtos.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Produtos
+  properties:
+  - type: OpenAPI
+    url: openapi/180-insurance-produtos-api-openapi.yml
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
+- aid: 180-insurance:180-insurance-propostas-api
+  name: 180 Insurance Propostas API
+  description: The Propostas API from 180 Insurance — 7 operation(s) for propostas.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Propostas
+  properties:
+  - type: OpenAPI
+    url: openapi/180-insurance-propostas-api-openapi.yml
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
+- aid: 180-insurance:180-insurance-renova-es-api
+  name: 180 Insurance Renovações API
+  description: The Renovações API from 180 Insurance — 3 operation(s) for renovações.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Renovações
+  properties:
+  - type: OpenAPI
+    url: openapi/180-insurance-renova-es-api-openapi.yml
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
+- aid: 180-insurance:180-insurance-sinistros-api
+  name: 180 Insurance Sinistros API
+  description: The Sinistros API from 180 Insurance — 8 operation(s) for sinistros.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Sinistros
+  properties:
+  - type: OpenAPI
+    url: openapi/180-insurance-sinistros-api-openapi.yml
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
+- aid: 180-insurance:180-insurance-vendas-api
+  name: 180 Insurance Vendas API
+  description: The Vendas API from 180 Insurance — 6 operation(s) for vendas.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Vendas
+  properties:
+  - type: OpenAPI
+    url: openapi/180-insurance-vendas-api-openapi.yml
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
+- aid: 180-insurance:180-insurance-webhooks-api
+  name: 180 Insurance Webhooks API
+  description: The Webhooks API from 180 Insurance — 3 operation(s) for webhooks.
+  humanURL: https://docs.180s.com.br/reference/introducao
+  baseURL: https://sagas.staging.180s.com.br
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/180-insurance-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.180s.com.br/reference/introducao
+  - type: APIReference
+    url: https://docs.180s.com.br/reference
+  - type: Authentication
+    url: authentication/180-insurance-authentication.yml
+  - type: ErrorCatalog
+    url: errors/180-insurance-problem-types.yml
+  - type: Webhooks
+    url: asyncapi/180-insurance-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/180-insurance-mcp.yml
+  - type: Conventions
+    url: conventions/180-insurance-conventions.yml
+  - type: DataModel
+    url: data-model/180-insurance-data-model.yml
 x-enrichment:
   date: '2026-07-19'
   status: backfilled

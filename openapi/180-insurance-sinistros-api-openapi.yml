@@ -1,0 +1,1818 @@
+openapi: 3.2.0
+info:
+  title: Sagas Sinistros API
+  version: v1
+  contact:
+    email: engineers@180s.com.br
+servers:
+- url: //sagas.staging.180s.com.br
+security:
+- oauth: []
+tags:
+- name: Sinistros
+paths:
+  /sagas/v1/sinistros/whitelabel/gerar-url:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/GerarUrlWhitelabelSinistrosResposta
+                properties:
+                  url:
+                    type: string
+                additionalProperties: false
+                required:
+                - url
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: camaleao.lib.schema.contracts.sagas.wire-in/GerarUrlWhitelabelSinistrosRequisicao
+              properties:
+                id-venda:
+                  type: string
+                  format: uuid
+                id-usuario:
+                  type: string
+                detalhes-pagamento:
+                  type: object
+                  title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroDetalhesPagamento
+                  properties:
+                    beneficiario:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/BeneficiarioSinistro
+                      properties:
+                        tipo:
+                          type: string
+                          enum:
+                          - segurado
+                          - credor
+                          - outro
+                        nome:
+                          type: string
+                        cpf-ou-cnpj:
+                          type: string
+                          pattern: ^([0-9]{11}|[A-Z0-9]{12}[0-9]{2})$
+                          example: '57036536306'
+                      additionalProperties: false
+                      required:
+                      - tipo
+                      - nome
+                      - cpf-ou-cnpj
+                    dados-pagamento:
+                      type: object
+                      properties:
+                        metodo-pagamento:
+                          type: string
+                          enum:
+                          - boleto
+                          - pix-brcode
+                          - ted
+                          - pix
+                        pix:
+                          type: object
+                          properties:
+                            chave:
+                              type: string
+                            conta-bancaria:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixContaBancaria
+                              properties:
+                                agencia:
+                                  type: string
+                                  pattern: ^[0-9]*$
+                                  example: '4400'
+                                conta:
+                                  type: string
+                                  pattern: ^[0-9]*$
+                                  example: '84002483'
+                                agencia-digito-verificador:
+                                  type: string
+                                conta-digito-verificador:
+                                  type: string
+                                banco:
+                                  type: string
+                                  pattern: ^[0-9]{8}$
+                                  example: '22135451'
+                              additionalProperties: false
+                              required:
+                              - agencia
+                              - conta
+                              - banco
+                          additionalProperties: false
+                          example:
+                            chave: =s}/D&=~x1
+                        pix-brcode:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixBrcode
+                          properties:
+                            brcode:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - brcode
+                        ted:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoTed
+                          properties:
+                            agencia:
+                              type: string
+                              pattern: ^[0-9]*$
+                              example: '48602104'
+                            conta:
+                              type: string
+                              pattern: ^[0-9]*$
+                              example: '7850042199'
+                            agencia-digito-verificador:
+                              type: string
+                            conta-digito-verificador:
+                              type: string
+                            banco:
+                              type: string
+                              pattern: ^[0-9]{3}$
+                              example: '322'
+                          additionalProperties: false
+                          required:
+                          - agencia
+                          - conta
+                          - banco
+                        boleto:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoBoleto
+                          properties:
+                            codigo-de-barras:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - codigo-de-barras
+                      additionalProperties: false
+                      required:
+                      - metodo-pagamento
+                      example:
+                        metodo-pagamento: boleto
+                        pix:
+                          chave: h*-\De#T$
+                        pix-brcode:
+                          brcode: '[k6PRN}O#'
+                        boleto:
+                          codigo-de-barras: Z`m<Osb
+                  additionalProperties: false
+                  required:
+                  - beneficiario
+                  - dados-pagamento
+              additionalProperties: false
+              required:
+              - id-venda
+        required: true
+      tags:
+      - Sinistros
+      summary: Gerar URL de sinistro whitelabel
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Gera uma URL temporária para gerenciamento de sinistros via whitelabel.
+
+
+        A URL retornada expira conforme configuração do canal e deve ser usada dentro do período de validade.'
+      operationId: postSagasV1SinistrosWhitelabelGerarUrl
+      x-operation-id-source: derived
+  /sagas/v1/sinistros/{numero-sinistro}:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/SinistroResposta
+                properties:
+                  recusa:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/RecusaSinistro
+                    properties:
+                      data:
+                        type: string
+                        format: date-time
+                      descricao:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - data
+                    - descricao
+                  valor-restante:
+                    type: number
+                    format: double
+                    example: 1.71875
+                  valor:
+                    type: number
+                    format: double
+                    example: 7.125
+                  natureza:
+                    type: string
+                    enum:
+                    - perda-de-renda-desemprego
+                    - perda-de-renda-invalidez-fisica
+                    - morte-natural
+                    - morte-acidental
+                  saldo-devedor:
+                    type: number
+                    format: double
+                    example: -0.9375
+                  pessoa-para-contato:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                      email:
+                        type: string
+                        pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                        example: ib59Cq0N2EEuI902Jw7F5BV4KTMY1@ib59Cq0N2EEuI902Jw7F5BV4KTMY1.com
+                      telefone:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                        properties:
+                          codigo-pais:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '4'
+                          codigo-area:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '794'
+                          numero-telefone:
+                            type: string
+                            pattern: ^\d{7,9}$
+                            example: '491920704'
+                        additionalProperties: false
+                        required:
+                        - codigo-area
+                        - numero-telefone
+                    additionalProperties: false
+                    required:
+                    - nome
+                    example:
+                      nome: '@c6HL6g'
+                      email: yySPuCk734myq05C53IPH@yySPuCk734myq05C53IPH.com
+                      telefone:
+                        codigo-area: '10'
+                        numero-telefone: 036831644
+                  status:
+                    type: string
+                    enum:
+                    - criado
+                    - abertura-rejeitada
+                    - pendente-de-dados-de-pagamento
+                    - pendente-de-documentacao
+                    - documentacao-em-analise
+                    - recusado
+                    - finalizado
+                    - em-regulacao
+                  cobertura:
+                    type: string
+                  numero-sinistro:
+                    type: string
+                  relato-do-ocorrido:
+                    type: string
+                  data-aviso:
+                    type: string
+                    format: date-time
+                  documentacao:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentacaoSinistro
+                    properties:
+                      documentos-recebidos:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            arquivos:
+                              type: array
+                              items:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.wire-out/ArquivoDocumentacaoSinistro
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                  nome-arquivo:
+                                    type: string
+                                  data-envio:
+                                    type: string
+                                    format: date-time
+                                  tipo-documento:
+                                    type: string
+                                  id-externo:
+                                    type: string
+                                additionalProperties: false
+                                required:
+                                - id
+                                - nome-arquivo
+                                - data-envio
+                                - tipo-documento
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - arquivos
+                      documentos-pendentes:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoPendenteSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            data-solicitacao:
+                              type: string
+                              format: date-time
+                            detalhe:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - data-solicitacao
+                    additionalProperties: false
+                    required:
+                    - documentos-recebidos
+                    - documentos-pendentes
+                  franquia-paga:
+                    type: number
+                    format: double
+                    example: 1.6875
+                  pagamentos:
+                    type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-out/PagamentoSinistro
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        valor:
+                          type: number
+                          format: double
+                          example: 4
+                        data-pagamento:
+                          type: string
+                          format: date-time
+                      additionalProperties: false
+                      required:
+                      - id
+                      - valor
+                      - data-pagamento
+                  data-ocorrencia:
+                    type: string
+                    format: date-time
+                  solicitante:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-in/SolicitanteSinistro
+                    properties:
+                      nome:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - nome
+                additionalProperties: false
+                required:
+                - numero-sinistro
+                - valor
+                - pagamentos
+                - data-aviso
+                - pessoa-para-contato
+                - status
+                - solicitante
+                - data-ocorrencia
+                - cobertura
+                - valor-restante
+      parameters:
+      - in: path
+        name: numero-sinistro
+        description: ''
+        required: true
+        schema:
+          type: string
+      tags:
+      - Sinistros
+      summary: Obter detalhes de um sinistro
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Retorna os detalhes completos de um sinistro a partir do seu número.
+
+
+        A resposta inclui: status atual, valor total aprovado (`valor`), valor restante a pagar (`valor-restante`), lista de pagamentos realizados (`pagamentos`), cobertura acionada, datas de aviso e ocorrência, dados do solicitante e da pessoa para contato.
+
+
+        Quando aplicável, a resposta também inclui:
+
+        - `documentacao`: documentos solicitados e lista de arquivos enviados
+
+        - `recusa`: motivo e data de recusa, caso o sinistro tenha sido recusado
+
+        - `franquia-paga`: valor de franquia já pago pelo segurado
+
+        - `natureza` e `relato-do-ocorrido`: detalhes narrativos do ocorrido'
+      operationId: getSagasV1SinistrosByNumeroSinistro
+      x-operation-id-source: derived
+  /sagas/v1/sinistros/{numero-sinistro}/dados-pagamento:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/SinistroResposta
+                properties:
+                  recusa:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/RecusaSinistro
+                    properties:
+                      data:
+                        type: string
+                        format: date-time
+                      descricao:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - data
+                    - descricao
+                  valor-restante:
+                    type: number
+                    format: double
+                    example: 2
+                  valor:
+                    type: number
+                    format: double
+                    example: -1.1875
+                  natureza:
+                    type: string
+                    enum:
+                    - perda-de-renda-desemprego
+                    - perda-de-renda-invalidez-fisica
+                    - morte-natural
+                    - morte-acidental
+                  saldo-devedor:
+                    type: number
+                    format: double
+                    example: 1.8662109375
+                  pessoa-para-contato:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                      email:
+                        type: string
+                        pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                        example: KWG7Xo496z21MjMhN9Kq8OA8ALWVY6mKXFJMD94aqMuwn@KWG7Xo496z21MjMhN9Kq8OA8ALWVY6mKXFJMD94aqMuwn.com
+                      telefone:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                        properties:
+                          codigo-pais:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '29'
+                          codigo-area:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '2'
+                          numero-telefone:
+                            type: string
+                            pattern: ^\d{7,9}$
+                            example: '339225411'
+                        additionalProperties: false
+                        required:
+                        - codigo-area
+                        - numero-telefone
+                    additionalProperties: false
+                    required:
+                    - nome
+                    example:
+                      nome: +W
+                      email: QHY6jks1kHizMGg@QHY6jks1kHizMGg.com
+                      telefone:
+                        codigo-pais: '86'
+                        codigo-area: '28'
+                        numero-telefone: '2442599'
+                  status:
+                    type: string
+                    enum:
+                    - criado
+                    - abertura-rejeitada
+                    - pendente-de-dados-de-pagamento
+                    - pendente-de-documentacao
+                    - documentacao-em-analise
+                    - recusado
+                    - finalizado
+                    - em-regulacao
+                  cobertura:
+                    type: string
+                  numero-sinistro:
+                    type: string
+                  relato-do-ocorrido:
+                    type: string
+                  data-aviso:
+                    type: string
+                    format: date-time
+                  documentacao:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentacaoSinistro
+                    properties:
+                      documentos-recebidos:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            arquivos:
+                              type: array
+                              items:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.wire-out/ArquivoDocumentacaoSinistro
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                  nome-arquivo:
+                                    type: string
+                                  data-envio:
+                                    type: string
+                                    format: date-time
+                                  tipo-documento:
+                                    type: string
+                                  id-externo:
+                                    type: string
+                                additionalProperties: false
+                                required:
+                                - id
+                                - nome-arquivo
+                                - data-envio
+                                - tipo-documento
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - arquivos
+                      documentos-pendentes:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoPendenteSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            data-solicitacao:
+                              type: string
+                              format: date-time
+                            detalhe:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - data-solicitacao
+                    additionalProperties: false
+                    required:
+                    - documentos-recebidos
+                    - documentos-pendentes
+                  franquia-paga:
+                    type: number
+                    format: double
+                    example: 3.09375
+                  pagamentos:
+                    type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-out/PagamentoSinistro
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        valor:
+                          type: number
+                          format: double
+                          example: -7.5
+                        data-pagamento:
+                          type: string
+                          format: date-time
+                      additionalProperties: false
+                      required:
+                      - id
+                      - valor
+                      - data-pagamento
+                  data-ocorrencia:
+                    type: string
+                    format: date-time
+                  solicitante:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-in/SolicitanteSinistro
+                    properties:
+                      nome:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - nome
+                additionalProperties: false
+                required:
+                - numero-sinistro
+                - valor
+                - pagamentos
+                - data-aviso
+                - pessoa-para-contato
+                - status
+                - solicitante
+                - data-ocorrencia
+                - cobertura
+                - valor-restante
+      parameters:
+      - in: path
+        name: numero-sinistro
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroDetalhesPagamento
+              properties:
+                beneficiario:
+                  type: object
+                  title: camaleao.lib.schema.contracts.sagas.wire-in/BeneficiarioSinistro
+                  properties:
+                    tipo:
+                      type: string
+                      enum:
+                      - segurado
+                      - credor
+                      - outro
+                    nome:
+                      type: string
+                    cpf-ou-cnpj:
+                      type: string
+                      pattern: ^([0-9]{11}|[A-Z0-9]{12}[0-9]{2})$
+                      example: '91911881000310'
+                  additionalProperties: false
+                  required:
+                  - tipo
+                  - nome
+                  - cpf-ou-cnpj
+                dados-pagamento:
+                  type: object
+                  properties:
+                    metodo-pagamento:
+                      type: string
+                      enum:
+                      - boleto
+                      - pix-brcode
+                      - ted
+                      - pix
+                    pix:
+                      type: object
+                      properties:
+                        chave:
+                          type: string
+                        conta-bancaria:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixContaBancaria
+                          properties:
+                            agencia:
+                              type: string
+                              pattern: ^[0-9]*$
+                              example: '267'
+                            conta:
+                              type: string
+                              pattern: ^[0-9]*$
+                              example: '2530911315'
+                            agencia-digito-verificador:
+                              type: string
+                            conta-digito-verificador:
+                              type: string
+                            banco:
+                              type: string
+                              pattern: ^[0-9]{8}$
+                              example: '12088076'
+                          additionalProperties: false
+                          required:
+                          - agencia
+                          - conta
+                          - banco
+                      additionalProperties: false
+                      example:
+                        conta-bancaria:
+                          agencia: '323805'
+                          conta: '29081384'
+                          agencia-digito-verificador: muipEpy
+                          conta-digito-verificador: ?w@$SP
+                          banco: 08584274
+                    pix-brcode:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixBrcode
+                      properties:
+                        brcode:
+                          type: string
+                      additionalProperties: false
+                      required:
+                      - brcode
+                    ted:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoTed
+                      properties:
+                        agencia:
+                          type: string
+                          pattern: ^[0-9]*$
+                          example: '3'
+                        conta:
+                          type: string
+                          pattern: ^[0-9]*$
+                          example: '8687379080'
+                        agencia-digito-verificador:
+                          type: string
+                        conta-digito-verificador:
+                          type: string
+                        banco:
+                          type: string
+                          pattern: ^[0-9]{3}$
+                          example: '051'
+                      additionalProperties: false
+                      required:
+                      - agencia
+                      - conta
+                      - banco
+                    boleto:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoBoleto
+                      properties:
+                        codigo-de-barras:
+                          type: string
+                      additionalProperties: false
+                      required:
+                      - codigo-de-barras
+                  additionalProperties: false
+                  required:
+                  - metodo-pagamento
+                  example:
+                    metodo-pagamento: pix
+                    pix:
+                      conta-bancaria:
+                        agencia: '964574'
+                        conta: '868'
+                        agencia-digito-verificador: Wj3S-Z8)IKa
+                        conta-digito-verificador: K'
+                        banco: '28069934'
+                    ted:
+                      agencia: '49275489'
+                      conta: '4545975447'
+                      conta-digito-verificador: (5L~#0<UR
+                      banco: '583'
+                    boleto:
+                      codigo-de-barras: qXH^
+              additionalProperties: false
+              required:
+              - beneficiario
+              - dados-pagamento
+        required: true
+      tags:
+      - Sinistros
+      summary: Enviar os dados de pagamento de um sinistro
+      operationId: postSagasV1SinistrosByNumeroSinistroDadosPagamento
+      x-operation-id-source: derived
+  /sagas/v1/sinistros/{numero-sinistro}/documentos/{file-id}:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema: {}
+      parameters:
+      - in: path
+        name: numero-sinistro
+        description: ''
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: file-id
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Sinistros
+      summary: Baixar arquivo de documentação de sinistro
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Baixa o arquivo de documentação identificado por `file-id` vinculado ao sinistro.
+
+
+        A resposta é o conteúdo binário do arquivo com os headers `Content-Type` e `Content-Disposition` correspondentes ao arquivo original enviado.'
+      operationId: getSagasV1SinistrosByNumeroSinistroDocumentosByFileId
+      x-operation-id-source: derived
+  /sagas/v1/sinistros/{numero-sinistro}/documentos/{file-id}/download-url:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/SinistroDocumentoDownloadUrlResposta
+                properties:
+                  download-url:
+                    type: string
+                    pattern: ^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,24}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$
+                    example: https://m0G4bv89wI0v4F70gmPNnpe4MAd9ftD0Sj.com.br
+                additionalProperties: false
+                required:
+                - download-url
+      parameters:
+      - in: path
+        name: numero-sinistro
+        description: ''
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: file-id
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Sinistros
+      summary: Gerar URL para baixar documentação de sinistro
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Gera uma URL pré-assinada para baixar o arquivo de documentação identificado por `file-id` vinculado ao sinistro.'
+      operationId: getSagasV1SinistrosByNumeroSinistroDocumentosByFileIdDownloadUrl
+      x-operation-id-source: derived
+  /sagas/v1/sinistros/{numero-sinistro}/enviar-documento:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/SinistroEnviarDocumentoResposta
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  nome-arquivo:
+                    type: string
+                  data-envio:
+                    type: string
+                    format: date-time
+                  url-envio:
+                    type: string
+                    pattern: ^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,24}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$
+                    example: https://px6S3pe13NVXUA6mdLfH055FZxTeyE7UY3VS.com.br
+                  id-externo:
+                    type: string
+                additionalProperties: false
+                required:
+                - id
+                - nome-arquivo
+                - data-envio
+                - url-envio
+      parameters:
+      - in: path
+        name: numero-sinistro
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroEnviarDocumentoRequisicao
+              properties:
+                nome-arquivo:
+                  type: string
+                data-envio:
+                  type: string
+                  format: date-time
+                tipo:
+                  type: string
+                  example: identificacao-pessoal
+                id-externo:
+                  type: string
+              additionalProperties: false
+              required:
+              - nome-arquivo
+              - data-envio
+              - tipo
+        required: true
+      tags:
+      - Sinistros
+      summary: Gerar url para upload de documento de sinistro
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Gera uma URL pré-assinada para upload de um documento vinculado ao sinistro.
+
+
+        Após receber a resposta, o cliente deve realizar o upload do arquivo diretamente na URL retornada no campo `url-envio` utilizando uma requisição **PUT**.
+
+
+        É necessário informar o nome do arquivo (`nome-arquivo`), a data de envio (`data-envio`) e o tipo do documento (`tipo`), que deve ser um dos tipos aplicáveis ao sinistro. O campo `id-externo` é opcional.'
+      operationId: postSagasV1SinistrosByNumeroSinistroEnviarDocumento
+      x-operation-id-source: derived
+  /sagas/v1/sinistros/{numero-sinistro}/saldo-devedor:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/SinistroResposta
+                properties:
+                  recusa:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/RecusaSinistro
+                    properties:
+                      data:
+                        type: string
+                        format: date-time
+                      descricao:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - data
+                    - descricao
+                  valor-restante:
+                    type: number
+                    format: double
+                    example: -3.71875
+                  valor:
+                    type: number
+                    format: double
+                    example: -3.09375
+                  natureza:
+                    type: string
+                    enum:
+                    - perda-de-renda-desemprego
+                    - perda-de-renda-invalidez-fisica
+                    - morte-natural
+                    - morte-acidental
+                  saldo-devedor:
+                    type: number
+                    format: double
+                    example: 0.44091796875
+                  pessoa-para-contato:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                      email:
+                        type: string
+                        pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                        example: lCeCd21V006nctoiNr8VRvzp3N9e@lCeCd21V006nctoiNr8VRvzp3N9e.com
+                      telefone:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                        properties:
+                          codigo-pais:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '6'
+                          codigo-area:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '8'
+                          numero-telefone:
+                            type: string
+                            pattern: ^\d{7,9}$
+                            example: '898144937'
+                        additionalProperties: false
+                        required:
+                        - codigo-area
+                        - numero-telefone
+                    additionalProperties: false
+                    required:
+                    - nome
+                    example:
+                      nome: PA =FV
+                      email: VTx3CgUdIqyQp3GcdT8UuDWoI4jpXw3W128Way@VTx3CgUdIqyQp3GcdT8UuDWoI4jpXw3W128Way.com
+                      telefone:
+                        codigo-area: '489'
+                        numero-telefone: '67813325'
+                  status:
+                    type: string
+                    enum:
+                    - criado
+                    - abertura-rejeitada
+                    - pendente-de-dados-de-pagamento
+                    - pendente-de-documentacao
+                    - documentacao-em-analise
+                    - recusado
+                    - finalizado
+                    - em-regulacao
+                  cobertura:
+                    type: string
+                  numero-sinistro:
+                    type: string
+                  relato-do-ocorrido:
+                    type: string
+                  data-aviso:
+                    type: string
+                    format: date-time
+                  documentacao:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentacaoSinistro
+                    properties:
+                      documentos-recebidos:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            arquivos:
+                              type: array
+                              items:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.wire-out/ArquivoDocumentacaoSinistro
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                  nome-arquivo:
+                                    type: string
+                                  data-envio:
+                                    type: string
+                                    format: date-time
+                                  tipo-documento:
+                                    type: string
+                                  id-externo:
+                                    type: string
+                                additionalProperties: false
+                                required:
+                                - id
+                                - nome-arquivo
+                                - data-envio
+                                - tipo-documento
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - arquivos
+                      documentos-pendentes:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoPendenteSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            data-solicitacao:
+                              type: string
+                              format: date-time
+                            detalhe:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - data-solicitacao
+                    additionalProperties: false
+                    required:
+                    - documentos-recebidos
+                    - documentos-pendentes
+                  franquia-paga:
+                    type: number
+                    format: double
+                    example: 1
+                  pagamentos:
+                    type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-out/PagamentoSinistro
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        valor:
+                          type: number
+                          format: double
+                          example: -1.4921875
+                        data-pagamento:
+                          type: string
+                          format: date-time
+                      additionalProperties: false
+                      required:
+                      - id
+                      - valor
+                      - data-pagamento
+                  data-ocorrencia:
+                    type: string
+                    format: date-time
+                  solicitante:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-in/SolicitanteSinistro
+                    properties:
+                      nome:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - nome
+                additionalProperties: false
+                required:
+                - numero-sinistro
+                - valor
+                - pagamentos
+                - data-aviso
+                - pessoa-para-contato
+                - status
+                - solicitante
+                - data-ocorrencia
+                - cobertura
+                - valor-restante
+      parameters:
+      - in: path
+        name: numero-sinistro
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroAtualizarSaldoDevedorRequisicao
+              properties:
+                saldo-devedor:
+                  type: number
+                  format: double
+                  example: 0.859375
+              additionalProperties: false
+              required:
+              - saldo-devedor
+        required: true
+      tags:
+      - Sinistros
+      summary: Atualizar saldo devedor de um sinistro
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Atualiza o saldo devedor de um sinistro a partir do seu número.
+
+
+        O valor informado em `saldo-devedor` será utilizado para ajustar o valor do sinistro, respeitando o limite máximo de indenização da cobertura.
+
+
+        A resposta retorna o sinistro atualizado, incluindo `valor`, `valor-restante` e `saldo-devedor`.'
+      operationId: postSagasV1SinistrosByNumeroSinistroSaldoDevedor
+      x-operation-id-source: derived
+  /sagas/v1/vendas/{id-venda}/abrir-sinistro:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/SinistroResposta
+                properties:
+                  recusa:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/RecusaSinistro
+                    properties:
+                      data:
+                        type: string
+                        format: date-time
+                      descricao:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - data
+                    - descricao
+                  valor-restante:
+                    type: number
+                    format: double
+                    example: 0.6875
+                  valor:
+                    type: number
+                    format: double
+                    example: 1.8828125
+                  natureza:
+                    type: string
+                    enum:
+                    - perda-de-renda-desemprego
+                    - perda-de-renda-invalidez-fisica
+                    - morte-natural
+                    - morte-acidental
+                  saldo-devedor:
+                    type: number
+                    format: double
+                    example: 0.375
+                  pessoa-para-contato:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                      email:
+                        type: string
+                        pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                        example: xO43X@xO43X.com
+                      telefone:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                        properties:
+                          codigo-pais:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '65'
+                          codigo-area:
+                            type: string
+                            pattern: ^\d{1,3}$
+                            example: '470'
+                          numero-telefone:
+                            type: string
+                            pattern: ^\d{7,9}$
+                            example: '1467254'
+                        additionalProperties: false
+                        required:
+                        - codigo-area
+                        - numero-telefone
+                    additionalProperties: false
+                    required:
+                    - nome
+                    example:
+                      nome: Ps5u|TQ#ns
+                      email: W6Oxk8rA634Ah5rQ@W6Oxk8rA634Ah5rQ.com
+                      telefone:
+                        codigo-area: '429'
+                        numero-telefone: '4524336'
+                  status:
+                    type: string
+                    enum:
+                    - criado
+                    - abertura-rejeitada
+                    - pendente-de-dados-de-pagamento
+                    - pendente-de-documentacao
+                    - documentacao-em-analise
+                    - recusado
+                    - finalizado
+                    - em-regulacao
+                  cobertura:
+                    type: string
+                  numero-sinistro:
+                    type: string
+                  relato-do-ocorrido:
+                    type: string
+                  data-aviso:
+                    type: string
+                    format: date-time
+                  documentacao:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentacaoSinistro
+                    properties:
+                      documentos-recebidos:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            arquivos:
+                              type: array
+                              items:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.wire-out/ArquivoDocumentacaoSinistro
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                  nome-arquivo:
+                                    type: string
+                                  data-envio:
+                                    type: string
+                                    format: date-time
+                                  tipo-documento:
+                                    type: string
+                                  id-externo:
+                                    type: string
+                                additionalProperties: false
+                                required:
+                                - id
+                                - nome-arquivo
+                                - data-envio
+                                - tipo-documento
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - arquivos
+                      documentos-pendentes:
+                        type: array
+                        items:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-out/DocumentoPendenteSinistro
+                          properties:
+                            tipo:
+                              type: string
+                            titulo:
+                              type: string
+                            data-solicitacao:
+                              type: string
+                              format: date-time
+                            detalhe:
+                              type: string
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - titulo
+                          - data-solicitacao
+                    additionalProperties: false
+                    required:
+                    - documentos-recebidos
+                    - documentos-pendentes
+                  franquia-paga:
+                    type: number
+                    format: double
+                    example: 0.3984375
+                  pagamentos:
+                    type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-out/PagamentoSinistro
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        valor:
+                          type: number
+                          format: double
+                          example: 1.86328125
+                        data-pagamento:
+                          type: string
+                          format: date-time
+                      additionalProperties: false
+                      required:
+                      - id
+                      - valor
+                      - data-pagamento
+                  data-ocorrencia:
+                    type: string
+                    format: date-time
+                  solicitante:
+                    type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-in/SolicitanteSinistro
+                    properties:
+                      nome:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - nome
+                additionalProperties: false
+                required:
+                - numero-sinistro
+                - valor
+                - pagamentos
+                - data-aviso
+                - pessoa-para-contato
+                - status
+                - solicitante
+                - data-ocorrencia
+                - cobertura
+                - valor-restante
+      parameters:
+      - in: path
+        name: id-venda
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                natureza:
+                  type: string
+                  enum:
+                  - perda-de-renda-desemprego
+                  - perda-de-renda-invalidez-fisica
+                  - morte-natural
+                  - morte-acidental
+                saldo-devedor:
+                  type: number
+                  format: double
+                pessoa-para-contato:
+                  type: object
+                  properties:
+                    nome:
+                      type: string
+                    email:
+                      type: string
+                      pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+                    telefone:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/NumeroTelefone
+                      properties:
+                        codigo-pais:
+                          type: string
+                          pattern: ^\d{1,3}$
+                        codigo-area:
+                          type: string
+                          pattern: ^\d{1,3}$
+                        numero-telefone:
+                          type: string
+                          pattern: ^\d{7,9}$
+                      additionalProperties: false
+                      required:
+                      - codigo-area
+                      - numero-telefone
+                  additionalProperties: false
+                  required:
+                  - nome
+                detalhes-pagamento:
+                  oneOf:
+                  - type: object
+                    title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroDetalhesPagamento
+                    properties:
+                      beneficiario:
+                        type: object
+                        title: camaleao.lib.schema.contracts.sagas.wire-in/BeneficiarioSinistro
+                        properties:
+                          tipo:
+                            type: string
+                            enum:
+                            - segurado
+                            - credor
+                            - outro
+                          nome:
+                            type: string
+                          cpf-ou-cnpj:
+                            type: string
+                            pattern: ^([0-9]{11}|[A-Z0-9]{12}[0-9]{2})$
+                        additionalProperties: false
+                        required:
+                        - tipo
+                        - nome
+                        - cpf-ou-cnpj
+                      dados-pagamento:
+                        type: object
+                        properties:
+                          metodo-pagamento:
+                            type: string
+                            enum:
+                            - boleto
+                            - pix-brcode
+                            - ted
+                            - pix
+                          pix:
+                            type: object
+                            properties:
+                              chave:
+                                type: string
+                              conta-bancaria:
+                                type: object
+                                title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixContaBancaria
+                                properties:
+                                  agencia:
+                                    type: string
+                                    pattern: ^[0-9]*$
+                                  conta:
+                                    type: string
+                                    pattern: ^[0-9]*$
+                                  agencia-digito-verificador:
+                                    type: string
+                                  conta-digito-verificador:
+                                    type: string
+                                  banco:
+                                    type: string
+                                    pattern: ^[0-9]{8}$
+                                additionalProperties: false
+                                required:
+                                - agencia
+                                - conta
+                                - banco
+                            additionalProperties: false
+                          pix-brcode:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixBrcode
+                            properties:
+                              brcode:
+                                type: string
+                            additionalProperties: false
+                            required:
+                            - brcode
+                          ted:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoTed
+                            properties:
+                              agencia:
+                                type: string
+                                pattern: ^[0-9]*$
+                              conta:
+                                type: string
+                                pattern: ^[0-9]*$
+                              agencia-digito-verificador:
+                                type: string
+                              conta-digito-verificador:
+                                type: string
+                              banco:
+                                type: string
+                                pattern: ^[0-9]{3}$
+                            additionalProperties: false
+                            required:
+                            - agencia
+                            - conta
+                            - banco
+                          boleto:
+                            type: object
+                            title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoBoleto
+                            properties:
+                              codigo-de-barras:
+                                type: string
+                            additionalProperties: false
+                            required:
+                            - codigo-de-barras
+                        additionalProperties: false
+                        required:
+                        - metodo-pagamento
+                    additionalProperties: false
+                    required:
+                    - beneficiario
+                    - dados-pagamento
+                  - type: array
+                    items:
+                      type: object
+                      title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroDetalhesPagamento
+                      properties:
+                        beneficiario:
+                          type: object
+                          title: camaleao.lib.schema.contracts.sagas.wire-in/BeneficiarioSinistro
+                          properties:
+                            tipo:
+                              type: string
+                              enum:
+                              - segurado
+                              - credor
+                              - outro
+                            nome:
+                              type: string
+                            cpf-ou-cnpj:
+                              type: string
+                              pattern: ^([0-9]{11}|[A-Z0-9]{12}[0-9]{2})$
+                          additionalProperties: false
+                          required:
+                          - tipo
+                          - nome
+                          - cpf-ou-cnpj
+                        dados-pagamento:
+                          type: object
+                          properties:
+                            metodo-pagamento:
+                              type: string
+                              enum:
+                              - boleto
+                              - pix-brcode
+                              - ted
+                              - pix
+                            pix:
+                              type: object
+                              properties:
+                                chave:
+                                  type: string
+                                conta-bancaria:
+                                  type: object
+                                  title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixContaBancaria
+                                  properties:
+                                    agencia:
+                                      type: string
+                                      pattern: ^[0-9]*$
+                                    conta:
+                                      type: string
+                                      pattern: ^[0-9]*$
+                                    agencia-digito-verificador:
+                                      type: string
+                                    conta-digito-verificador:
+                                      type: string
+                                    banco:
+                                      type: string
+                                      pattern: ^[0-9]{8}$
+                                  additionalProperties: false
+                                  required:
+                                  - agencia
+                                  - conta
+                                  - banco
+                              additionalProperties: false
+                            pix-brcode:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoPixBrcode
+                              properties:
+                                brcode:
+                                  type: string
+                              additionalProperties: false
+                              required:
+                              - brcode
+                            ted:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoTed
+                              properties:
+                                agencia:
+                                  type: string
+                                  pattern: ^[0-9]*$
+                                conta:
+                                  type: string
+                                  pattern: ^[0-9]*$
+                                agencia-digito-verificador:
+                                  type: string
+                                conta-digito-verificador:
+                                  type: string
+                                banco:
+                                  type: string
+                                  pattern: ^[0-9]{3}$
+                              additionalProperties: false
+                              required:
+                              - agencia
+                              - conta
+                              - banco
+                            boleto:
+                              type: object
+                              title: camaleao.lib.schema.contracts.sagas.wire-in/SinistroPagamentoBoleto
+                              properties:
+                                codigo-de-barras:
+                                  type: string
+                              additionalProperties: false
+                              required:
+                              - codigo-de-barras
+                          additionalProperties: false
+                          required:
+                          - metodo-pagamento
+                      additionalProperties: false
+                      required:
+                      - beneficiario
+                      - dados-pagamento
+                cobertura:
+                  type: string
+                dados-adicionais:
+                  type: object
+                  additionalProperties: {}
+                relato-do-ocorrido:
+                  type: string
+                data-ocorrencia:
+                  type: string
+                  format: date-time
+                solicitante:
+                  type: object
+                  title: camaleao.lib.schema.contracts.sagas.wire-in/SolicitanteSinistro
+                  properties:
+                    nome:
+                      type: string
+                  additionalProperties: false
+                  required:
+                  - nome
+              additionalProperties: false
+              required:
+              - pessoa-para-contato
+              - solicitante
+              - data-ocorrencia
+              - cobertura
+        required: true
+      tags:
+      - Sinistros
+      summary: Abrir sinistro para apólice vinculada a venda
+      description: '**⚠️ Endpoint em desenvolvimento (WIP).** O comportamento e contrato podem sofrer alterações.
+
+
+        Realiza a abertura de um sinistro para a apólice de seguro vinculada a uma venda.
+
+
+        Para abrir o sinistro é necessário informar:
+
+        - `pessoa-para-contato`: dados de quem a seguradora deve contatar
+
+        - `solicitante`: identificação do solicitante do sinistro
+
+        - `cobertura`: cobertura acionada (deve corresponder a uma cobertura ativa da apólice)
+
+        - `data-ocorrencia`: data em que o evento ocorreu
+
+
+        Opcionalmente é possível informar `relato-do-ocorrido`, `saldo-devedor` e `detalhes-pagamento` (caso já se saiba beneficiário e método de pagamento). `detalhes-pagamento` aceita um único item ou uma lista, para sinistros com mais de um beneficiário.
+
+
+        O campo `natureza` é obrigatório para as coberturas `cobertura/morte` e `cobertura/perda-de-renda`. Os valores aceitos são:
+
+        - `morte-acidental`: morte por acidente
+
+        - `morte-natural`: morte por causas naturais
+
+        - `perda-de-renda-desemprego`: perda de renda por desemprego
+
+        - `perda-de-renda-invalidez-fisica`: perda de renda por invalidez física
+
+
+        O sinistro criado pode assumir os seguintes status: `criado`, `pendente-de-documentacao`, `em-regulacao`, `recusado` ou `finalizado`.
+
+
+        O campo `numero-sinistro` retornado é o identificador utilizado nos demais endpoints de sinistro.'
+      operationId: postSagasV1VendasByIdVendaAbrirSinistro
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    oauth:
+      type: oauth2
+      description: Adicione client_id e client_secret para obter um token válido.
+      flows:
+        clientCredentials:
+          tokenUrl: https://180s-staging.us.auth0.com/oauth/token
+          scopes: {}
+x-id:
+- reitit.swagger/default
+x-provenance:
+  method: searched
+  source: https://docs.180s.com.br/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.180s.com.br/reference/delete_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-boleto-payment-intent-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-combos.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-cotacoes-id-cotacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-propostas-id-proposta-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-vendas-id-venda-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes-id-renovacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id-download-url.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-vendas-id-venda.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-webhooks.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta-cliente-segurado.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-cotacoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-obter-venda.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-reenviar-comunicacao-comunicacao.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-renovacoes-id-renovacao-iniciar.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-dados-pagamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-enviar-documento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-saldo-devedor.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-whitelabel-gerar-url.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-abrir-sinistro.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-alteracoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks-id-webhook-rotacionar-chave-hmac.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks.md
+  merge:
+    pages: 33
+    deduped: 32
+    conflicts_kept_first: 0

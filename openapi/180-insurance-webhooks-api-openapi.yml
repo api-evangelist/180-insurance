@@ -1,0 +1,544 @@
+openapi: 3.2.0
+info:
+  title: Sagas Webhooks API
+  version: v1
+  contact:
+    email: engineers@180s.com.br
+servers:
+- url: //sagas.staging.180s.com.br
+security:
+- oauth: []
+tags:
+- name: Webhooks
+paths:
+  /sagas/v1/webhooks:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  title: camaleao.lib.schema.contracts.sagas.wire-out/WebhookResposta
+                  properties:
+                    eventos-habilitados:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - renovacao-completa
+                        - renovacao-iniciada
+                        - proposta-requisicao-de-cancelamento-completa
+                        - sinistro-pendente-de-dados-de-pagamento
+                        - venda-completa
+                        - sinistro-pagamento
+                        - sinistro-finalizado
+                        - renovacao-cancelada
+                        - venda-criada
+                        - proposta-documentos-renderizados
+                        - sinistro-documentacao-aprovada
+                        - proposta-expirada
+                        - renovacao-disponivel
+                        - sinistro-reaberto
+                        - sinistro-criado
+                        - proposta-requisicao-de-cancelamento-criada
+                        - venda-requisicao-de-cancelamento-criada
+                        - proposta-criada
+                        - sinistro-pagamento-concluido
+                        - sinistro-ajuste-de-reserva
+                        - venda-documentos-renderizados
+                        - cancelamento-pagamento-concluido
+                        - sinistro-documentacao-negada
+                        - sinistro-documentacao-em-analise
+                        - venda-requisicao-de-cancelamento-completa
+                        - sinistro-negado
+                    url:
+                      type: string
+                    instante-atualizacao:
+                      type: string
+                      format: date-time
+                    descricao:
+                      type: string
+                    id:
+                      type: string
+                      format: uuid
+                    ativo:
+                      type: boolean
+                    instante-criacao:
+                      type: string
+                      format: date-time
+                    envia-header-de-autorizacao:
+                      type: boolean
+                    hmac-habilitado:
+                      type: boolean
+                  additionalProperties: false
+                  required:
+                  - instante-atualizacao
+                  - descricao
+                  - ativo
+                  - id
+                  - url
+                  - eventos-habilitados
+                  - instante-criacao
+      tags:
+      - Webhooks
+      summary: Listar assinaturas
+      description: Endpoint utilizado para obter os webhooks ativos e suas respectivas urls.
+      operationId: getSagasV1Webhooks
+      x-operation-id-source: derived
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/CriarWebhookResposta
+                properties:
+                  eventos-habilitados:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - renovacao-completa
+                      - renovacao-iniciada
+                      - proposta-requisicao-de-cancelamento-completa
+                      - sinistro-pendente-de-dados-de-pagamento
+                      - venda-completa
+                      - sinistro-pagamento
+                      - sinistro-finalizado
+                      - renovacao-cancelada
+                      - venda-criada
+                      - proposta-documentos-renderizados
+                      - sinistro-documentacao-aprovada
+                      - proposta-expirada
+                      - renovacao-disponivel
+                      - sinistro-reaberto
+                      - sinistro-criado
+                      - proposta-requisicao-de-cancelamento-criada
+                      - venda-requisicao-de-cancelamento-criada
+                      - proposta-criada
+                      - sinistro-pagamento-concluido
+                      - sinistro-ajuste-de-reserva
+                      - venda-documentos-renderizados
+                      - cancelamento-pagamento-concluido
+                      - sinistro-documentacao-negada
+                      - sinistro-documentacao-em-analise
+                      - venda-requisicao-de-cancelamento-completa
+                      - sinistro-negado
+                  chave-assinatura-hmac:
+                    type: string
+                  url:
+                    type: string
+                  instante-atualizacao:
+                    type: string
+                    format: date-time
+                  descricao:
+                    type: string
+                  id:
+                    type: string
+                    format: uuid
+                  ativo:
+                    type: boolean
+                  instante-criacao:
+                    type: string
+                    format: date-time
+                  envia-header-de-autorizacao:
+                    type: boolean
+                  hmac-habilitado:
+                    type: boolean
+                additionalProperties: false
+                required:
+                - instante-atualizacao
+                - descricao
+                - ativo
+                - id
+                - url
+                - eventos-habilitados
+                - instante-criacao
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: camaleao.lib.schema.contracts.sagas.wire-in/CriarWebhook
+              properties:
+                descricao:
+                  type: string
+                ativo:
+                  type: boolean
+                url:
+                  type: string
+                  pattern: ^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,24}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$
+                  example: https://lLAB12CNRY2sk.com.br
+                eventos-habilitados:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - renovacao-completa
+                    - renovacao-iniciada
+                    - proposta-requisicao-de-cancelamento-completa
+                    - sinistro-pendente-de-dados-de-pagamento
+                    - venda-completa
+                    - sinistro-pagamento
+                    - sinistro-finalizado
+                    - renovacao-cancelada
+                    - venda-criada
+                    - proposta-documentos-renderizados
+                    - sinistro-documentacao-aprovada
+                    - proposta-expirada
+                    - renovacao-disponivel
+                    - sinistro-reaberto
+                    - sinistro-criado
+                    - proposta-requisicao-de-cancelamento-criada
+                    - venda-requisicao-de-cancelamento-criada
+                    - proposta-criada
+                    - sinistro-pagamento-concluido
+                    - sinistro-ajuste-de-reserva
+                    - venda-documentos-renderizados
+                    - cancelamento-pagamento-concluido
+                    - sinistro-documentacao-negada
+                    - sinistro-documentacao-em-analise
+                    - venda-requisicao-de-cancelamento-completa
+                    - sinistro-negado
+                segredo-compartilhado:
+                  type: string
+                  pattern: ^.{12,128}$
+                  example: '4169928530114250265851470867739531163258518554405331459755982240718310681040'
+                hmac-habilitado:
+                  type: boolean
+              additionalProperties: false
+              required:
+              - descricao
+              - ativo
+              - url
+              - eventos-habilitados
+        required: true
+      tags:
+      - Webhooks
+      summary: Criar nova assinatura para eventos
+      description: 'Endpoint utilizado para cadastrar uma url que será utilizada no envio de webhooks.
+
+
+        A url cadastrada deverá obrigatoriamente responder ao verbo POST e retonar o status da família 2xx (Exemplo: status 204).'
+      operationId: postSagasV1Webhooks
+      x-operation-id-source: derived
+  /sagas/v1/webhooks/{id-webhook}:
+    delete:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/WebhookResposta
+                properties:
+                  eventos-habilitados:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - renovacao-completa
+                      - renovacao-iniciada
+                      - proposta-requisicao-de-cancelamento-completa
+                      - sinistro-pendente-de-dados-de-pagamento
+                      - venda-completa
+                      - sinistro-pagamento
+                      - sinistro-finalizado
+                      - renovacao-cancelada
+                      - venda-criada
+                      - proposta-documentos-renderizados
+                      - sinistro-documentacao-aprovada
+                      - proposta-expirada
+                      - renovacao-disponivel
+                      - sinistro-reaberto
+                      - sinistro-criado
+                      - proposta-requisicao-de-cancelamento-criada
+                      - venda-requisicao-de-cancelamento-criada
+                      - proposta-criada
+                      - sinistro-pagamento-concluido
+                      - sinistro-ajuste-de-reserva
+                      - venda-documentos-renderizados
+                      - cancelamento-pagamento-concluido
+                      - sinistro-documentacao-negada
+                      - sinistro-documentacao-em-analise
+                      - venda-requisicao-de-cancelamento-completa
+                      - sinistro-negado
+                  url:
+                    type: string
+                  instante-atualizacao:
+                    type: string
+                    format: date-time
+                  descricao:
+                    type: string
+                  id:
+                    type: string
+                    format: uuid
+                  ativo:
+                    type: boolean
+                  instante-criacao:
+                    type: string
+                    format: date-time
+                  envia-header-de-autorizacao:
+                    type: boolean
+                  hmac-habilitado:
+                    type: boolean
+                additionalProperties: false
+                required:
+                - instante-atualizacao
+                - descricao
+                - ativo
+                - id
+                - url
+                - eventos-habilitados
+                - instante-criacao
+      parameters:
+      - in: path
+        name: id-webhook
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Webhooks
+      summary: Remover assinatura
+      description: 'Endpoint utilizado para remover permanentemente uma assinatura de webhook.
+
+
+        Caso a assinatura seja removida através desse endpoint, não será possível mais reativá-la. Logo, será necessário realizar o cadastro de uma nova assinatura.'
+      operationId: deleteSagasV1WebhooksByIdWebhook
+      x-operation-id-source: derived
+    patch:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/WebhookResposta
+                properties:
+                  eventos-habilitados:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - renovacao-completa
+                      - renovacao-iniciada
+                      - proposta-requisicao-de-cancelamento-completa
+                      - sinistro-pendente-de-dados-de-pagamento
+                      - venda-completa
+                      - sinistro-pagamento
+                      - sinistro-finalizado
+                      - renovacao-cancelada
+                      - venda-criada
+                      - proposta-documentos-renderizados
+                      - sinistro-documentacao-aprovada
+                      - proposta-expirada
+                      - renovacao-disponivel
+                      - sinistro-reaberto
+                      - sinistro-criado
+                      - proposta-requisicao-de-cancelamento-criada
+                      - venda-requisicao-de-cancelamento-criada
+                      - proposta-criada
+                      - sinistro-pagamento-concluido
+                      - sinistro-ajuste-de-reserva
+                      - venda-documentos-renderizados
+                      - cancelamento-pagamento-concluido
+                      - sinistro-documentacao-negada
+                      - sinistro-documentacao-em-analise
+                      - venda-requisicao-de-cancelamento-completa
+                      - sinistro-negado
+                  url:
+                    type: string
+                  instante-atualizacao:
+                    type: string
+                    format: date-time
+                  descricao:
+                    type: string
+                  id:
+                    type: string
+                    format: uuid
+                  ativo:
+                    type: boolean
+                  instante-criacao:
+                    type: string
+                    format: date-time
+                  envia-header-de-autorizacao:
+                    type: boolean
+                  hmac-habilitado:
+                    type: boolean
+                additionalProperties: false
+                required:
+                - instante-atualizacao
+                - descricao
+                - ativo
+                - id
+                - url
+                - eventos-habilitados
+                - instante-criacao
+      parameters:
+      - in: path
+        name: id-webhook
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: camaleao.lib.schema.contracts.sagas.wire-in/AtualizarWebhook
+              properties:
+                descricao:
+                  type: string
+                ativo:
+                  type: boolean
+                url:
+                  type: string
+                  pattern: ^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,24}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$
+                  example: https://bhMD2d99gNQLjPu189TRZ861D1qer3UG77t8G136R9i9.com.br
+                eventos-habilitados:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - renovacao-completa
+                    - renovacao-iniciada
+                    - proposta-requisicao-de-cancelamento-completa
+                    - sinistro-pendente-de-dados-de-pagamento
+                    - venda-completa
+                    - sinistro-pagamento
+                    - sinistro-finalizado
+                    - renovacao-cancelada
+                    - venda-criada
+                    - proposta-documentos-renderizados
+                    - sinistro-documentacao-aprovada
+                    - proposta-expirada
+                    - renovacao-disponivel
+                    - sinistro-reaberto
+                    - sinistro-criado
+                    - proposta-requisicao-de-cancelamento-criada
+                    - venda-requisicao-de-cancelamento-criada
+                    - proposta-criada
+                    - sinistro-pagamento-concluido
+                    - sinistro-ajuste-de-reserva
+                    - venda-documentos-renderizados
+                    - cancelamento-pagamento-concluido
+                    - sinistro-documentacao-negada
+                    - sinistro-documentacao-em-analise
+                    - venda-requisicao-de-cancelamento-completa
+                    - sinistro-negado
+                segredo-compartilhado:
+                  type: string
+                  pattern: ^.{12,128}$
+                  example: '95225784688407408336495953154611956633695833288177988110837793561779890516819918'
+              additionalProperties: false
+        required: true
+      tags:
+      - Webhooks
+      summary: Atualizar assinatura
+      description: 'Endpoint utilizado para atualizar as informações de uma assinatura de webhook.
+
+
+        Caso queira desativar o envio para uma determinada url temporariamente, basta utilizar este endpoint para atualizar o parâmetro `ativo` para `false`.'
+      operationId: patchSagasV1WebhooksByIdWebhook
+      x-operation-id-source: derived
+  /sagas/v1/webhooks/{id-webhook}/rotacionar-chave-hmac:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                title: camaleao.lib.schema.contracts.sagas.wire-out/WebhookRotacionarChavesHmacResposta
+                properties:
+                  chave-assinatura-hmac-secundaria:
+                    type: string
+                  instante-expiracao-chave-hmac-atual:
+                    type: string
+                    format: date-time
+                additionalProperties: false
+                required:
+                - chave-assinatura-hmac-secundaria
+                - instante-expiracao-chave-hmac-atual
+      parameters:
+      - in: path
+        name: id-webhook
+        description: ''
+        required: true
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Webhooks
+      summary: Rotacionar chave HMAC
+      description: Inicia processo para rotacionar chave HMAC da assinatura. A chave atual continua funcionando por 7 dias a partir da chamada deste endpoint. A nova chave retornada deve passar a ser usada dentro deste período.
+      operationId: postSagasV1WebhooksByIdWebhookRotacionarChaveHmac
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    oauth:
+      type: oauth2
+      description: Adicione client_id e client_secret para obter um token válido.
+      flows:
+        clientCredentials:
+          tokenUrl: https://180s-staging.us.auth0.com/oauth/token
+          scopes: {}
+x-id:
+- reitit.swagger/default
+x-provenance:
+  method: searched
+  source: https://docs.180s.com.br/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.180s.com.br/reference/delete_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-boleto-payment-intent-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-combos.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-cotacoes-id-cotacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-propostas-id-proposta-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-documentos-vendas-id-venda-produtos-id-produto.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes-id-renovacao.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-renovacoes.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id-download-url.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro-documentos-file-id.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-sinistros-numero-sinistro.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-vendas-id-venda.md
+  - https://docs.180s.com.br/reference/get_sagas-v1-webhooks.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta-cliente-segurado.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-propostas-id-proposta.md
+  - https://docs.180s.com.br/reference/patch_sagas-v1-webhooks-id-webhook.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-cotacoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-obter-venda.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-reenviar-comunicacao-comunicacao.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas-id-proposta-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-propostas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-renovacoes-id-renovacao-iniciar.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-dados-pagamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-enviar-documento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-numero-sinistro-saldo-devedor.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-sinistros-whitelabel-gerar-url.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-abrir-sinistro.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-alteracoes.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas-id-venda-solicitar-cancelamento.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-vendas.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks-id-webhook-rotacionar-chave-hmac.md
+  - https://docs.180s.com.br/reference/post_sagas-v1-webhooks.md
+  merge:
+    pages: 33
+    deduped: 32
+    conflicts_kept_first: 0

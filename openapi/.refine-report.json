@@ -1,0 +1,36 @@
+{
+  "provider": "180-insurance",
+  "sources": [
+    "180-insurance-sagas-api-openapi.yml"
+  ],
+  "outputs": [
+    "180-insurance-cota-es-api-openapi.yml",
+    "180-insurance-produtos-api-openapi.yml",
+    "180-insurance-propostas-api-openapi.yml",
+    "180-insurance-renova-es-api-openapi.yml",
+    "180-insurance-sinistros-api-openapi.yml",
+    "180-insurance-vendas-api-openapi.yml",
+    "180-insurance-webhooks-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [
+    "180-insurance-sagas-api-openapi.yml: previously refined output kept for 33 operation(s) no archived document covers (e.g. /sagas/v1/boleto/{payment-intent-id} get, /sagas/v1/combos get, /sagas/v1/cotacoes post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "180-insurance-sagas-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Cota\u00e7\u00f5es",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Produtos",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Propostas",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Renova\u00e7\u00f5es",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Sinistros",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Vendas",
+    "180-insurance-sagas-api-openapi.yml: declared missing tag: Webhooks",
+    "superseded outputs removed: 180-insurance-sagas-api-openapi.yml",
+    "apis.yml register: written (+7 apis, 7 total)"
+  ],
+  "skipped": []
+}
