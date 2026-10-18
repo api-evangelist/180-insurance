@@ -321,6 +321,8 @@ apis:
   humanURL: https://docs.180s.com.br/reference/introducao
   baseURL: https://sagas.staging.180s.com.br
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
